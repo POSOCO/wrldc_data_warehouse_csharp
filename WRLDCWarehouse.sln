@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WRLDCWarehouse.ETL", "WRLDC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WRLDCWarehouse.Data", "WRLDCWarehouse.Data\WRLDCWarehouse.Data.csproj", "{0370FDF0-8850-49BA-AE7B-12D9B8AAA773}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRLDCWareHouseWebApp", "WRLDCWareHouseWebApp\WRLDCWareHouseWebApp.csproj", "{4D6E732F-51D4-499E-9801-5574BC264ACD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0370FDF0-8850-49BA-AE7B-12D9B8AAA773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0370FDF0-8850-49BA-AE7B-12D9B8AAA773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0370FDF0-8850-49BA-AE7B-12D9B8AAA773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6E732F-51D4-499E-9801-5574BC264ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6E732F-51D4-499E-9801-5574BC264ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6E732F-51D4-499E-9801-5574BC264ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6E732F-51D4-499E-9801-5574BC264ACD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

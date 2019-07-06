@@ -12,10 +12,10 @@ namespace WRLDCWarehouse.Core.Frequency
         // https://www.meziantou.net/entity-framework-core-specifying-data-type-length-and-precision.htm
         // make sure DateKey is set unique in fluent api
 
-        public int TransDailyFrequencySummaryId { get; set; }
+        public int MartDailyFrequencySummaryId { get; set; }
 
         [Required, Column(TypeName = "date")]
-        public int DataDate { get; set; }
+        public DateTime DataDate { get; set; }
 
         [Required, Column(TypeName = "decimal(4,2)")]
         public decimal AverageFrequency { get; set; }

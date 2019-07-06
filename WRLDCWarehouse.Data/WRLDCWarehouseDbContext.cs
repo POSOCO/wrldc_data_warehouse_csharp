@@ -8,13 +8,13 @@ using WRLDCWarehouse.Core.Frequency;
 
 namespace WRLDCWarehouse.Data
 {
-    public class WRLDCMISDbContext : DbContext
+    public class WRLDCWarehouseDbContext : DbContext
     {
         public DbSet<RawFrequency> RawFrequencies { get; set; }
         public DbSet<MartDailyFrequencySummary> MartDailyFrequencySummaries { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
-        public WRLDCMISDbContext(DbContextOptions<WRLDCMISDbContext> options)
+        public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
             : base(options)
         {
 
