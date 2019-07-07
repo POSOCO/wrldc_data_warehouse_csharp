@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WRLDCWarehouse.Core\WRLDCWarehouse.Core.csproj" />
+    <ProjectReference Include="..\WRLDCWarehouse.Data\WRLDCWarehouse.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using WRLDCWarehouse.Core.Frequency;
 using WRLDCWarehouse.ETL.StatHelpers;
-namespace WRLDCWarehouse.ETL
+
+namespace WRLDCWarehouse.ETL.Transformations
 {
     public class RawFrequencyTrasformation
     {
-        public MartDailyFrequencySummary TransformFreq(IEnumerable<RawFrequency> rawFreqs)
+        public MartDailyFrequencySummary TransformDayFreq(IEnumerable<RawFrequency> rawDayFreqs)
         {
             // we are assuming that the samples are in sorted time order
-            if (rawFreqs.Count() == 0)
+            if (rawDayFreqs.Count() == 0)
             {
                 return null;
             }
             MartDailyFrequencySummary martDailyFrequencySummary = new MartDailyFrequencySummary();
+            martDailyFrequencySummary.DataDate = rawDayFreqs.First().DataTime.Date;
 
-            IEnumerable<decimal> rawFreqVals = rawFreqs.Select(rf => rf.Frequency);
+            IEnumerable<decimal> rawFreqVals = rawDayFreqs.Select(rf => rf.Frequency);
             int rawFreqValsCount = rawFreqVals.Count();
 
             // average freq
@@ -27,14 +29,14 @@ namespace WRLDCWarehouse.ETL
 
             // max freq time
             int maxFreqInd = rawFreqVals.MaxIndex();
-            DateTime maxFreqTime = rawFreqs.ElementAt(maxFreqInd).DataTime;
+            DateTime maxFreqTime = rawDayFreqs.ElementAt(maxFreqInd).DataTime;
 
             // min freq
             decimal minFreq = rawFreqVals.Min();
 
             // min freq time
             int minFreqInd = rawFreqVals.MinIndex();
-            DateTime minFreqTime = rawFreqs.ElementAt(minFreqInd).DataTime;
+            DateTime minFreqTime = rawDayFreqs.ElementAt(minFreqInd).DataTime;
 
             // standard deviation of freq
             decimal stdFreq = rawFreqVals.StandardDeviation();
@@ -71,7 +73,7 @@ namespace WRLDCWarehouse.ETL
             decimal percGreat50_05 = rawFreqVals.Where(rf => rf >= 50.5m).Count() * 100 / rawFreqValsCount;
 
             // calculate number of freq is out of IEGC band
-            decimal NumOutOfIEGCHrs = (decimal)((rawFreqs.Last().DataTime - rawFreqs.First().DataTime).TotalHours * (double)percGreatEq49_9LessEq50_05 * 0.01);
+            decimal NumOutOfIEGCHrs = (decimal)((rawDayFreqs.Last().DataTime - rawDayFreqs.First().DataTime).TotalHours * (double)percGreatEq49_9LessEq50_05 * 0.01);
 
             //calculate fvi of freq
             decimal fvi = rawFreqVals.GetFVI();
@@ -100,13 +102,8 @@ namespace WRLDCWarehouse.ETL
             martDailyFrequencySummary.PercLess49_9 = percLess49_9;
             martDailyFrequencySummary.PercGreatEq49_9LessEq50_05 = percGreatEq49_9LessEq50_05;
             martDailyFrequencySummary.PercGreat50_05 = percGreat50_05;
-            
+
             return martDailyFrequencySummary;
-        }
-
-        public void LoadMartDailyFrequencySummaryForDates()
-        {
-
         }
     }
 }
