@@ -68,5 +68,6 @@ namespace WRLDCWarehouse.Core.Frequency
 
         [Required, Column(TypeName = "decimal(4,2)")]
         public decimal MinBlkFreq { get; set; }
+
     }
 }
