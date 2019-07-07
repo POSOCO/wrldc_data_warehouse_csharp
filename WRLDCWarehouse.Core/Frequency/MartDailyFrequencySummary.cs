@@ -20,10 +20,10 @@ namespace WRLDCWarehouse.Core.Frequency
         [Required, Column(TypeName = "decimal(4,2)")]
         public decimal AverageFrequency { get; set; }
 
-        [Required, Column(TypeName = "decimal(4,2)")]
+        [Required, Column(TypeName = "decimal(5,3)")]
         public decimal StandardDeviationFrequency { get; set; }
 
-        [Required, Column(TypeName = "decimal(4,2)")]
+        [Required, Column(TypeName = "decimal(5,3)")]
         public decimal FVIFrequency { get; set; }
 
         [Required, Column(TypeName = "decimal(5,3)")]

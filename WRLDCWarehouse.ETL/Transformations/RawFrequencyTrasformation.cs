@@ -49,31 +49,31 @@ namespace WRLDCWarehouse.ETL.Transformations
             decimal minBlkFreq = freqBlks.Min();
 
             // percentage values less than 48.8
-            decimal percLess48_8 = rawFreqVals.Where(rf => rf < 48.8m).Count() * 100 / rawFreqValsCount;
+            decimal percLess48_8 = rawFreqVals.Where(rf => rf < 48.8m).Count() * 100m / rawFreqValsCount;
 
             // percentage values less than 49
-            decimal percLess49 = rawFreqVals.Where(rf => rf < 49m).Count() * 100 / rawFreqValsCount;
+            decimal percLess49 = rawFreqVals.Where(rf => rf < 49m).Count() * 100m / rawFreqValsCount;
 
             // percentage values less than 49.2
-            decimal percLess49_2 = rawFreqVals.Where(rf => rf < 49.2m).Count() * 100 / rawFreqValsCount;
+            decimal percLess49_2 = rawFreqVals.Where(rf => rf < 49.2m).Count() * 100m / rawFreqValsCount;
 
             // percentage values less than 49.5
-            decimal percLess49_5 = rawFreqVals.Where(rf => rf < 49.5m).Count() * 100 / rawFreqValsCount;
+            decimal percLess49_5 = rawFreqVals.Where(rf => rf < 49.5m).Count() * 100m / rawFreqValsCount;
 
             // percentage values less than 49.7
-            decimal percLess49_7 = rawFreqVals.Where(rf => rf < 49.7m).Count() * 100 / rawFreqValsCount;
+            decimal percLess49_7 = rawFreqVals.Where(rf => rf < 49.7m).Count() * 100m / rawFreqValsCount;
 
             // percentage values less than 49.9
-            decimal percLess49_9 = rawFreqVals.Where(rf => rf < 49.9m).Count() * 100 / rawFreqValsCount;
+            decimal percLess49_9 = rawFreqVals.Where(rf => rf < 49.9m).Count() * 100m / rawFreqValsCount;
 
             // percentage values betwen 49.9 and 50.05
-            decimal percGreatEq49_9LessEq50_05 = rawFreqVals.Where(rf => rf >= 49.9m && rf <= 50.5m).Count() * 100 / rawFreqValsCount;
+            decimal percGreatEq49_9LessEq50_05 = rawFreqVals.Where(rf => rf >= 49.9m && rf <= 50.05m).Count() * 100m / rawFreqValsCount;
 
             // percentage values more than 50.05
-            decimal percGreat50_05 = rawFreqVals.Where(rf => rf >= 50.5m).Count() * 100 / rawFreqValsCount;
+            decimal percGreat50_05 = rawFreqVals.Where(rf => rf >= 50.05m).Count() * 100m / rawFreqValsCount;
 
             // calculate number of freq is out of IEGC band
-            decimal NumOutOfIEGCHrs = (decimal)((rawDayFreqs.Last().DataTime - rawDayFreqs.First().DataTime).TotalHours * (double)percGreatEq49_9LessEq50_05 * 0.01);
+            decimal NumOutOfIEGCHrs = (decimal)((rawDayFreqs.Last().DataTime - rawDayFreqs.First().DataTime).TotalHours * (double)(100 - percGreatEq49_9LessEq50_05) * 0.01);
 
             //calculate fvi of freq
             decimal fvi = rawFreqVals.GetFVI();

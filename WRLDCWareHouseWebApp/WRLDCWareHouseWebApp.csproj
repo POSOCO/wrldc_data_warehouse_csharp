@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WRLDCWarehouse.Data\WRLDCWarehouse.Data.csproj" />
+    <ProjectReference Include="..\WRLDCWarehouse.ETL\WRLDCWarehouse.ETL.csproj" />
   </ItemGroup>
 
 </Project>
