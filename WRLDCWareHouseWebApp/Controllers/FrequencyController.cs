@@ -26,12 +26,13 @@ namespace WRLDCWareHouseWebApp.Controllers
         // POST: Frequency/TransformFrequency
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TransformFrequency([Bind("DateValue")] FreqPageViewModel vm)
+        public async Task<IActionResult> TransformFrequency([Bind("FromDateValue, ToDateValue")] FreqPageViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 JobTransformRawFrequency job = new JobTransformRawFrequency();
-                await job.CreateFrequencySummaryForDate(_context, vm.DateValue);
+                // await job.CreateFrequencySummaryForDate(_context, vm.FromDateValue);
+                await job.CreateFrequencySummaryForDates(_context, vm.FromDateValue, vm.ToDateValue);
                 return View("Index");
             }
             return View(vm);

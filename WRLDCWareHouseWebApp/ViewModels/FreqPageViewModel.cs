@@ -7,6 +7,7 @@ namespace WRLDCWareHouseWebApp.ViewModels
 {
     public class FreqPageViewModel
     {
-        public DateTime DateValue { get; set; }
+        public DateTime FromDateValue { get; set; }
+        public DateTime ToDateValue { get; set; }
     }
 }

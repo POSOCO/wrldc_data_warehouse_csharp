@@ -13,9 +13,12 @@
         <form asp-action="TransformFrequency">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DateValue" class="control-label"></label>
-                <input asp-for="DateValue" type="date" class="form-control" />
-                <span asp-validation-for="DateValue" class="text-danger"></span>
+                <label asp-for="FromDateValue" class="control-label"></label>
+                <input asp-for="FromDateValue" type="date" class="form-control" />
+                <span asp-validation-for="FromDateValue" class="text-danger"></span>
+                <label asp-for="ToDateValue" class="control-label"></label>
+                <input asp-for="ToDateValue" type="date" class="form-control" />
+                <span asp-validation-for="ToDateValue" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Transform Frequency" class="btn btn-primary" />
