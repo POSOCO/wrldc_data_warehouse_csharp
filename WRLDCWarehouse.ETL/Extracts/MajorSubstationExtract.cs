@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using WRLDCWarehouse.Core.Entities;
+using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class VoltLevelExtract
+    public class MajorSubstationExtract
     {
-        public List<VoltLevel> ExtractVoltageLevels(string oracleConnString)
+        public List<MajorSubstationForeign> ExtractMajorSubstationsForeign(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -20,9 +20,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        //Use the command to display employee names from 
-                        // the EMPLOYEES table
-                        cmd.CommandText = "select TRANS_ELEMENT_TYPE_ID, TRANS_ELEMENT_TYPE, ELEMENT_CATEGORY from TRANS_ELEMENT_TYPE_MASTER where :id=1 and TRANS_ELEMENT_TYPE_ID IS NOT NULL and TRANS_ELEMENT_TYPE IS NOT NULL and ELEMENT_CATEGORY IS NOT NULL";
+                        cmd.CommandText = "select ID, NAME, STATE_ID from MAJOR_SUBSTATION where :id=1 and NAME IS NOT NULL and ID IS NOT NULL and STATE_ID IS NOT NULL";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -31,19 +29,19 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<VoltLevel> volts = new List<VoltLevel>();
+                        List<MajorSubstationForeign> majorSubstationsForeign = new List<MajorSubstationForeign>();
                         while (reader.Read())
                         {
-                            VoltLevel volt = new VoltLevel();
-                            volt.Name = reader.GetString(1);
-                            volt.WebUatId = reader.GetInt32(0);
-                            volt.EntityType = reader.GetString(2);
-                            volts.Add(volt);
+                            MajorSubstationForeign majorSSForeign = new MajorSubstationForeign();
+                            majorSSForeign.WebUatId = reader.GetInt32(0);
+                            majorSSForeign.Name = reader.GetString(1);
+                            majorSSForeign.StateWebUatId = reader.GetInt32(2);
+                            majorSubstationsForeign.Add(majorSSForeign);
                         }
 
                         reader.Dispose();
 
-                        return volts;
+                        return majorSubstationsForeign;
                     }
                     catch (Exception ex)
                     {

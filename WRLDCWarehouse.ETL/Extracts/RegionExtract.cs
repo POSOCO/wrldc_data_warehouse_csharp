@@ -2,14 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using WRLDCWarehouse.Core.Entities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class VoltLevelExtract
+    public class RegionExtract
     {
-        public List<VoltLevel> ExtractVoltageLevels(string oracleConnString)
+        public List<Region> ExtractRegions(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -22,7 +21,7 @@ namespace WRLDCWarehouse.ETL.Extracts
 
                         //Use the command to display employee names from 
                         // the EMPLOYEES table
-                        cmd.CommandText = "select TRANS_ELEMENT_TYPE_ID, TRANS_ELEMENT_TYPE, ELEMENT_CATEGORY from TRANS_ELEMENT_TYPE_MASTER where :id=1 and TRANS_ELEMENT_TYPE_ID IS NOT NULL and TRANS_ELEMENT_TYPE IS NOT NULL and ELEMENT_CATEGORY IS NOT NULL";
+                        cmd.CommandText = "select ID, FULL_NAME, SHORT_NAME from REGION_MASTER where :id=1 and FULL_NAME IS NOT NULL and ID IS NOT NULL and SHORT_NAME IS NOT NULL";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -31,19 +30,19 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<VoltLevel> volts = new List<VoltLevel>();
+                        List<Region> regions = new List<Region>();
                         while (reader.Read())
                         {
-                            VoltLevel volt = new VoltLevel();
-                            volt.Name = reader.GetString(1);
-                            volt.WebUatId = reader.GetInt32(0);
-                            volt.EntityType = reader.GetString(2);
-                            volts.Add(volt);
+                            Region region = new Region();
+                            region.WebUatId = reader.GetInt32(0);
+                            region.Fullname = reader.GetString(1);
+                            region.ShortName = reader.GetString(2);
+                            regions.Add(region);
                         }
 
                         reader.Dispose();
 
-                        return volts;
+                        return regions;
                     }
                     catch (Exception ex)
                     {

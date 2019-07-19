@@ -14,6 +14,6 @@ namespace WRLDCWarehouse.Core.Entities
         public string ShortName { get; set; }
         public string FullName { get; set; }
 
-        public string WebUatId { get; set; }
+        public int WebUatId { get; set; }
     }
 }

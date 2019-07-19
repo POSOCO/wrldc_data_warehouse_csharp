@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Oracle.ManagedDataAccess.Client;
 using WRLDCWarehouse.Core.Entities;
+using WRLDCWarehouse.Core.ForiegnEntities;
 using WRLDCWarehouse.ETL.Extracts;
 
 namespace TestSpace
@@ -10,18 +11,71 @@ namespace TestSpace
     {
         static void Main(string[] args)
         {
+
+            string oracleWebUatConnString = $"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.GetEnvironmentVariable("REPORTING_DB_HOST")})(PORT={Environment.GetEnvironmentVariable("REPORTING_DB_PORT")})))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={Environment.GetEnvironmentVariable("REPORTING_DB_SERVICENAME")})));User Id={Environment.GetEnvironmentVariable("REPORTING_DB_WEBUAT_USERNAME")};Password={Environment.GetEnvironmentVariable("REPORTING_DB_WEBUAT_PASSWORD")};";
+
+            //TestExtractVoltageLevels(oracleWebUatConnString);
+            //TestExtractOwners(oracleWebUatConnString);
+            //TestExtractRegions(oracleWebUatConnString);
+            //TestExtractStates(oracleWebUatConnString);
+            //TestExtractMajorSubstations(oracleWebUatConnString);
+            // TestExtractSubstations(oracleWebUatConnString);
+        }
+
+
+        public static void TestExtractVoltageLevels(string oracleWebUatConnString)
+        {
             Console.WriteLine("Test - Extarcting Voltage Levels");
-            string oracleConnString = $"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.GetEnvironmentVariable("REPORTING_DB_HOST")})(PORT={Environment.GetEnvironmentVariable("REPORTING_DB_PORT")})))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={Environment.GetEnvironmentVariable("REPORTING_DB_SERVICENAME")})));User Id={Environment.GetEnvironmentVariable("REPORTING_DB_WEBUAT_USERNAME")};Password={Environment.GetEnvironmentVariable("REPORTING_DB_WEBUAT_PASSWORD")};";
             VoltLevelExtract voltLevelExtract = new VoltLevelExtract();
-            List<VoltLevel> volts = voltLevelExtract.ExtractVoltageLevels(oracleConnString);
+            List<VoltLevel> volts = voltLevelExtract.ExtractVoltageLevels(oracleWebUatConnString);
             Console.WriteLine(volts);
         }
 
-        public void ConnTest()
+        public static void TestExtractOwners(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extarcting Owners");
+            OwnerExtract ownerExtract = new OwnerExtract();
+            List<Owner> owners = ownerExtract.ExtractOwners(oracleWebUatConnString);
+            Console.WriteLine(owners);
+        }
+
+        public static void TestExtractRegions(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extarcting Regions");
+            RegionExtract regionExtract = new RegionExtract();
+            List<Region> regions = regionExtract.ExtractRegions(oracleWebUatConnString);
+            Console.WriteLine(regions);
+        }
+
+        public static void TestExtractStates(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extarcting States");
+            StateExtract regionExtract = new StateExtract();
+            List<StateForeign> statesForeign = regionExtract.ExtractStatesForeign(oracleWebUatConnString);
+            Console.WriteLine(statesForeign);
+        }
+
+        public static void TestExtractMajorSubstations(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extracting Major Substations");
+            MajorSubstationExtract majorSSExtract = new MajorSubstationExtract();
+            List<MajorSubstationForeign> substationsForeign = majorSSExtract.ExtractMajorSubstationsForeign(oracleWebUatConnString);
+            Console.WriteLine(substationsForeign);
+        }
+
+        public static void TestExtractSubstations(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extracting Substations");
+            SubstationExtract ssExtract = new SubstationExtract();
+            List<SubstationForeign> substationsForeign = ssExtract.ExtractSubstationsForeign(oracleWebUatConnString);
+            Console.WriteLine(substationsForeign);
+        }
+
+        public static void ConnTest(string conString)
         {
             Console.WriteLine("Oracle Data fetch test!");
             //Create a connection to Oracle			
-            string conString = $"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.GetEnvironmentVariable("REPORTING_DB_HOST")})(PORT={Environment.GetEnvironmentVariable("REPORTING_DB_PORT")})))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={Environment.GetEnvironmentVariable("REPORTING_DB_SERVICENAME")})));User Id={Environment.GetEnvironmentVariable("REPORTING_DB_USERNAME")};Password={Environment.GetEnvironmentVariable("REPORTING_DB_PASSWORD")};";
+            // string conString = $"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.GetEnvironmentVariable("REPORTING_DB_HOST")})(PORT={Environment.GetEnvironmentVariable("REPORTING_DB_PORT")})))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={Environment.GetEnvironmentVariable("REPORTING_DB_SERVICENAME")})));User Id={Environment.GetEnvironmentVariable("REPORTING_DB_USERNAME")};Password={Environment.GetEnvironmentVariable("REPORTING_DB_PASSWORD")};";
 
             using (OracleConnection con = new OracleConnection(conString))
             {
