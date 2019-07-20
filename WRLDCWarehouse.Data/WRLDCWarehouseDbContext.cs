@@ -27,6 +27,7 @@ namespace WRLDCWarehouse.Data
         public DbSet<AcTransmissionLine> AcTransmissionLines { get; set; }
         public DbSet<AcTransLineCkt> AcTransLineCkts { get; set; }
         public DbSet<AcTransLineCktOwner> AcTransLineCktOwners { get; set; }
+        public DbSet<Bus> Buses { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -124,7 +125,24 @@ namespace WRLDCWarehouse.Data
                 .WithMany()
                 .HasForeignKey(so => so.OwnerId);
 
-            //Many to Many relationship of Transmisssion line Circuit owners
+            // Ac Transmission Line settings - Name, WebUatId are unique, optionally we can keep from and to substation combination also as unique
+            builder.Entity<AcTransmissionLine>()
+            .HasIndex(actl => actl.Name)
+            .IsUnique();
+            builder.Entity<AcTransmissionLine>()
+             .HasIndex(actl => actl.WebUatId)
+             .IsUnique();
+
+            // Ac Transmission Line Circuit settings - Name, WebUatId are unique, combination of AcTransmissionLineId and circuit number is unique
+            builder.Entity<AcTransLineCkt>()
+            .HasIndex(ckt => ckt.Name)
+            .IsUnique();
+            builder.Entity<AcTransLineCkt>()
+             .HasIndex(ckt => ckt.WebUatId)
+             .IsUnique();
+            builder.Entity<AcTransLineCkt>().HasIndex(ckt => new { ckt.AcTransLineCktId, ckt.CktNumber }).IsUnique();
+
+            // Many to Many relationship of Transmisssion line Circuit owners
             builder.Entity<AcTransLineCktOwner>().HasKey(cktOwn => new { cktOwn.AcTransLineCktId, cktOwn.OwnerId });
 
             builder.Entity<AcTransLineCktOwner>()
@@ -136,6 +154,15 @@ namespace WRLDCWarehouse.Data
                 .HasOne(cktOwn => cktOwn.Owner)
                 .WithMany()
                 .HasForeignKey(cktOwn => cktOwn.OwnerId);
+
+            // Bus settings - Name, WebUatId are unique, combination of AcTransmissionLineId and circuit number is unique
+            builder.Entity<Bus>()
+            .HasIndex(b => b.Name)
+            .IsUnique();
+            builder.Entity<Bus>()
+             .HasIndex(b => b.WebUatId)
+             .IsUnique();
+            builder.Entity<Bus>().HasIndex(b => new { b.SubstationId, b.BusNumber }).IsUnique();
 
         }
 

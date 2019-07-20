@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WRLDCWarehouse.Core.Entities
 {
     public class AcTransLineCkt
     {
-        // volt level is redundant since e can get that through from and to ss volt levels
+        // volt level is redundant since we can get that through from and to ss volt levels
         // Bus 1 and Bus 2 is pending
 
         public int AcTransLineCktId { get; set; }
+        [Required]
         public string Name { get; set; }
-        public int CktNumber { get; set; }
+        public string CktNumber { get; set; }
 
         public AcTransmissionLine AcTransmissionLine { get; set; }
         public int AcTransmissionLineId { get; set; }

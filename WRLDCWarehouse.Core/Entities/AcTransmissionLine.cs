@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WRLDCWarehouse.Core.Entities
@@ -7,6 +8,7 @@ namespace WRLDCWarehouse.Core.Entities
     public class AcTransmissionLine
     {
         public int AcTransmissionLineId { get; set; }
+        [Required]
         public int Name { get; set; }
 
         public Substation FromSubstation { get; set; }
