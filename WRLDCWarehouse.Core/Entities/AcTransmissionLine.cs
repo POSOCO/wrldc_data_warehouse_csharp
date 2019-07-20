@@ -17,7 +17,7 @@ namespace WRLDCWarehouse.Core.Entities
 
         public VoltLevel VoltLevel { get; set; }
         public int VoltLevelId { get; set; }
-
+        
         public int WebUatId { get; set; }
     }
 }

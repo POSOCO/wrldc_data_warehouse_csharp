@@ -4,11 +4,13 @@ using System.Text;
 
 namespace WRLDCWarehouse.Core.Entities
 {
-    public class Owner
+    public class AcTransLineCktOwner
     {
+        public AcTransLineCkt AcTransLineCkt { get; set; }
+        public int AcTransLineCktId { get; set; }
+
+        public Owner Owner { get; set; }
         public int OwnerId { get; set; }
-        [Required]
-        public string Name { get; set; }
 
         public int WebUatId { get; set; }
     }

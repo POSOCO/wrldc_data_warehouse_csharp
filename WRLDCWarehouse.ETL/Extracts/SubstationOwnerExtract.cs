@@ -19,8 +19,6 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        //Use the command to display employee names from 
-                        // the EMPLOYEES table
                         cmd.CommandText = "select ID, PARENT_ENTITY_ATTRIBUTE_ID, CHILD_ENTITY_ATTRIBUTE_ID from ENTITY_ENTITY_RELN where :id=1 and PARENT_ENTITY='ASSOCIATE_SUBSTATION' and CHILD_ENTITY='OWNER' and PARENT_ENTITY_ATTRIBUTE='Owner' and CHILD_ENTITY_ATTRIBUTE='OwnerId'";
 
                         // Assign id parameter

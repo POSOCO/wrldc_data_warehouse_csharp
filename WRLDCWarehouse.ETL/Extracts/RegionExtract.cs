@@ -35,7 +35,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         {
                             Region region = new Region();
                             region.WebUatId = reader.GetInt32(0);
-                            region.Fullname = reader.GetString(1);
+                            region.FullName = reader.GetString(1);
                             region.ShortName = reader.GetString(2);
                             regions.Add(region);
                         }

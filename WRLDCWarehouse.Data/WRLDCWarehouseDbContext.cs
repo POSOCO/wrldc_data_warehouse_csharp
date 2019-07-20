@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WRLDCWarehouse.Core.Frequency;
+using WRLDCWarehouse.Core.Entities;
+using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.Data
 {
@@ -12,6 +14,19 @@ namespace WRLDCWarehouse.Data
     {
         public DbSet<RawFrequency> RawFrequencies { get; set; }
         public DbSet<MartDailyFrequencySummary> MartDailyFrequencySummaries { get; set; }
+
+        // Entites
+        public DbSet<Region> Regions { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<VoltLevel> VoltLevels { get; set; }
+        public DbSet<ConductorType> ConductorTypes { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<MajorSubstation> MajorSubstations { get; set; }
+        public DbSet<Substation> Substations { get; set; }
+        public DbSet<SubstationOwner> SubstationOwners { get; set; }
+        public DbSet<AcTransmissionLine> AcTransmissionLines { get; set; }
+        public DbSet<AcTransLineCkt> AcTransLineCkts { get; set; }
+        public DbSet<AcTransLineCktOwner> AcTransLineCktOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -29,6 +44,99 @@ namespace WRLDCWarehouse.Data
             builder.Entity<MartDailyFrequencySummary>()
             .HasIndex(mfs => mfs.DataDate)
             .IsUnique();
+
+            // Region Settings - ShortName, FullName, WebUatId are unique
+            builder.Entity<Region>()
+            .HasIndex(r => r.ShortName)
+            .IsUnique();
+            builder.Entity<Region>()
+            .HasIndex(r => r.FullName)
+            .IsUnique();
+            builder.Entity<Region>()
+            .HasIndex(r => r.WebUatId)
+            .IsUnique();
+
+            // Owner Settings - Name, WebUatId are unique
+            builder.Entity<Owner>()
+            .HasIndex(o => o.Name)
+            .IsUnique();
+            builder.Entity<Owner>()
+            .HasIndex(o => o.WebUatId)
+            .IsUnique();
+
+            // VoltLevel settings - Name, WebUatId are unique
+            builder.Entity<VoltLevel>()
+            .HasIndex(v => v.Name)
+            .IsUnique();
+            builder.Entity<VoltLevel>()
+             .HasIndex(v => v.WebUatId)
+             .IsUnique();
+
+            // Conductor Type settings - Name, WebUatId are unique
+            builder.Entity<ConductorType>()
+            .HasIndex(ct => ct.Name)
+            .IsUnique();
+            builder.Entity<ConductorType>()
+             .HasIndex(ct => ct.WebUatId)
+             .IsUnique();
+
+            // States settings - FullName, ShortName, WebUatId are unique
+            builder.Entity<State>()
+            .HasIndex(s => s.FullName)
+            .IsUnique();
+            builder.Entity<State>()
+            .HasIndex(s => s.ShortName)
+            .IsUnique();
+            builder.Entity<State>()
+             .HasIndex(s => s.WebUatId)
+             .IsUnique();
+
+            // Major Substation settings - Name, WebUatId are unique
+            builder.Entity<MajorSubstation>()
+            .HasIndex(ms => ms.Name)
+            .IsUnique();
+            builder.Entity<MajorSubstation>()
+             .HasIndex(ms => ms.WebUatId)
+             .IsUnique();
+            
+            // Substation settings - Name, WebUatId are unique, default value of bus bar scheme is NA
+            builder.Entity<Substation>()
+            .HasIndex(ss => ss.Name)
+            .IsUnique();
+            builder.Entity<Substation>()
+             .HasIndex(ss => ss.WebUatId)
+             .IsUnique();
+            builder.Entity<Substation>()
+            .Property(ss => ss.BusbarScheme)
+            .IsRequired()
+            .HasDefaultValue("NA");
+
+            // Many to Many relationship of Substation owners
+            builder.Entity<SubstationOwner>().HasKey(ss => new { ss.SubstationId, ss.OwnerId });
+
+            builder.Entity<SubstationOwner>()
+                .HasOne(so => so.Substation)
+                .WithMany(ss => ss.SubstationOwners)
+                .HasForeignKey(so => so.SubstationId);
+
+            builder.Entity<SubstationOwner>()
+                .HasOne(so => so.Owner)
+                .WithMany()
+                .HasForeignKey(so => so.OwnerId);
+
+            //Many to Many relationship of Transmisssion line Circuit owners
+            builder.Entity<AcTransLineCktOwner>().HasKey(cktOwn => new { cktOwn.AcTransLineCktId, cktOwn.OwnerId });
+
+            builder.Entity<AcTransLineCktOwner>()
+                .HasOne(cktOwn => cktOwn.AcTransLineCkt)
+                .WithMany(ckt => ckt.AcTransLineCktOwners)
+                .HasForeignKey(cktOwn => cktOwn.AcTransLineCktId);
+
+            builder.Entity<AcTransLineCktOwner>()
+                .HasOne(cktOwn => cktOwn.Owner)
+                .WithMany()
+                .HasForeignKey(cktOwn => cktOwn.OwnerId);
+
         }
 
     }
