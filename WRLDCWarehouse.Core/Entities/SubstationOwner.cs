@@ -14,6 +14,5 @@ namespace WRLDCWarehouse.Core.Entities
         public int OwnerId { get; set; }
 
         public int WebUatId { get; set; }
-
     }
 }

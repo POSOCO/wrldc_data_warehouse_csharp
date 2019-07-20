@@ -19,7 +19,9 @@ namespace TestSpace
             //TestExtractRegions(oracleWebUatConnString);
             //TestExtractStates(oracleWebUatConnString);
             //TestExtractMajorSubstations(oracleWebUatConnString);
-            // TestExtractSubstations(oracleWebUatConnString);
+            //TestExtractSubstations(oracleWebUatConnString);
+            //TestExtractSubstationOwners(oracleWebUatConnString);
+            TestExtractConductorTypes(oracleWebUatConnString);
         }
 
 
@@ -71,9 +73,25 @@ namespace TestSpace
             Console.WriteLine(substationsForeign);
         }
 
+        public static void TestExtractSubstationOwners(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extracting Substation Owners");
+            SubstationOwnerExtract ssOwnerExtract = new SubstationOwnerExtract();
+            List<SubstationOwnerForeign> substationOwnersForeign = ssOwnerExtract.ExtractSubstationOwnersForeign(oracleWebUatConnString);
+            Console.WriteLine(substationOwnersForeign);
+        }
+
+        public static void TestExtractConductorTypes(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extracting Conductor Types");
+            ConductorTypeExtract condTypeExtract = new ConductorTypeExtract();
+            List<ConductorType> condTypes = condTypeExtract.ExtractConductorTypes(oracleWebUatConnString);
+            Console.WriteLine(condTypes);
+        }
+
         public static void ConnTest(string conString)
         {
-            Console.WriteLine("Oracle Data fetch test!");
+            Console.WriteLine("Oracle Data fetch test...");
             //Create a connection to Oracle			
             // string conString = $"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.GetEnvironmentVariable("REPORTING_DB_HOST")})(PORT={Environment.GetEnvironmentVariable("REPORTING_DB_PORT")})))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={Environment.GetEnvironmentVariable("REPORTING_DB_SERVICENAME")})));User Id={Environment.GetEnvironmentVariable("REPORTING_DB_USERNAME")};Password={Environment.GetEnvironmentVariable("REPORTING_DB_PASSWORD")};";
 
