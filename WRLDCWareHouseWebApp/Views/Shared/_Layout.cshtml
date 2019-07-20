@@ -42,6 +42,11 @@
 
     <partial name="_CookieConsentPartial" />
 
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info" id="successMessage">@TempData["Message"]</div>
+    }
+
     <div class="container body-content">
         @RenderBody()
         <hr />

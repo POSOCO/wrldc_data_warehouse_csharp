@@ -7,7 +7,7 @@ namespace WRLDCWarehouse.Core.Entities
 {
     public class MajorSubstation
     {
-        public int MajorSusbstationId { get; set; }
+        public int MajorSubstationId { get; set; }
         [Required]
         public string Name { get; set; }
 
