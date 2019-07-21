@@ -121,5 +121,21 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/Substations
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Substations([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignSubstations job = new JobReadForeignSubstations();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignSubstations(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Substations";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

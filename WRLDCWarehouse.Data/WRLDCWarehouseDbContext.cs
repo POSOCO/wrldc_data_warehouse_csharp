@@ -100,10 +100,8 @@ namespace WRLDCWarehouse.Data
              .HasIndex(ms => ms.WebUatId)
              .IsUnique();
             
-            // Substation settings - Name, WebUatId are unique, default value of bus bar scheme is NA
-            builder.Entity<Substation>()
-            .HasIndex(ss => ss.Name)
-            .IsUnique();
+            // Substation settings - (Name, Classification), WebUatId are unique, default value of bus bar scheme is NA
+            builder.Entity<Substation>().HasIndex(b => new { b.Name, b.Classification }).IsUnique();
             builder.Entity<Substation>()
              .HasIndex(ss => ss.WebUatId)
              .IsUnique();
