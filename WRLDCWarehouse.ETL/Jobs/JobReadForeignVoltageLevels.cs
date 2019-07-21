@@ -12,7 +12,7 @@ namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignVoltageLevels
     {
-        public async Task ExtractForeignVoltageLevels(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignVoltageLevels(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
         {
             VoltLevelExtract voltLevelExtract = new VoltLevelExtract();
             List<VoltLevel> voltLevels = voltLevelExtract.ExtractVoltageLevels(oracleConnStr);

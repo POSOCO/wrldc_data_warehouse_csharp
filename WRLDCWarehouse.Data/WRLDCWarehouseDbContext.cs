@@ -57,10 +57,10 @@ namespace WRLDCWarehouse.Data
             .HasIndex(r => r.WebUatId)
             .IsUnique();
 
-            // Owner Settings - Name, WebUatId are unique
-            builder.Entity<Owner>()
-            .HasIndex(o => o.Name)
-            .IsUnique();
+            // Owner Settings - Name, WebUatId are unique. Todo take up with vendor and remove owne id 20 and then we can make name unique
+            //builder.Entity<Owner>()
+            //.HasIndex(o => o.Name)
+            //.IsUnique();
             builder.Entity<Owner>()
             .HasIndex(o => o.WebUatId)
             .IsUnique();
