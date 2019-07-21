@@ -21,7 +21,7 @@
                 <span asp-validation-for="EntityWriteOption" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Extract Voltage Levels" class="btn btn-primary" />
+                <input type="submit" value="Import Voltage Levels" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -39,7 +39,7 @@
                 <span asp-validation-for="EntityWriteOption" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Extract Regions" class="btn btn-primary" />
+                <input type="submit" value="Import Regions" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -57,7 +57,7 @@
                 <span asp-validation-for="EntityWriteOption" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Extract Owners" class="btn btn-primary" />
+                <input type="submit" value="Import Owners" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -75,7 +75,25 @@
                 <span asp-validation-for="EntityWriteOption" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Extract Conductor types" class="btn btn-primary" />
+                <input type="submit" value="Import Conductor types" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="States">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EntityWriteOption" class="control-label"></label>
+                <select asp-for="EntityWriteOption" asp-items="Html.GetEnumSelectList<EntityWriteOption>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="EntityWriteOption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Import States" class="btn btn-primary" />
             </div>
         </form>
     </div>

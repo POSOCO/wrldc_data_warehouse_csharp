@@ -19,7 +19,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if volt level is not present, then insert
             if (existingVoltLevel == null)
             {
-                _context.Add(voltLevel);
+                _context.VoltLevels.Add(voltLevel);
                 await _context.SaveChangesAsync();
                 return voltLevel;
             }
@@ -34,7 +34,7 @@ namespace WRLDCWarehouse.ETL.Loads
             if (opt == EntityWriteOption.Replace && existingVoltLevel != null)
             {
                 _context.VoltLevels.Remove(existingVoltLevel);
-                _context.Add(voltLevel);
+                _context.VoltLevels.Add(voltLevel);
                 await _context.SaveChangesAsync();
                 return voltLevel;
             }

@@ -16,7 +16,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if region is not present, then insert
             if (existingOwner == null)
             {
-                _context.Add(owner);
+                _context.Owners.Add(owner);
                 await _context.SaveChangesAsync();
                 return owner;
             }
@@ -31,7 +31,7 @@ namespace WRLDCWarehouse.ETL.Loads
             if (opt == EntityWriteOption.Replace && existingOwner != null)
             {
                 _context.Owners.Remove(existingOwner);
-                _context.Add(owner);
+                _context.Owners.Add(owner);
                 await _context.SaveChangesAsync();
                 return owner;
             }

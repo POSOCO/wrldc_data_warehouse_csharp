@@ -36,7 +36,7 @@ namespace WRLDCWareHouseWebApp.Controllers
                 JobReadForeignVoltageLevels job = new JobReadForeignVoltageLevels();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
                 await job.ImportForeignVoltageLevels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
-                TempData["Message"] = "Completed Extracting Voltage Levels";
+                TempData["Message"] = "Completed Importing Voltage Levels";
                 return RedirectToAction("Index");
             }
             return View(vm);
@@ -52,7 +52,7 @@ namespace WRLDCWareHouseWebApp.Controllers
                 JobReadForeignRegions job = new JobReadForeignRegions();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
                 await job.ImportForeignRegions(_context, oracleWebUatConnStr, vm.EntityWriteOption);
-                TempData["Message"] = "Completed Extracting Regions";
+                TempData["Message"] = "Completed Importing Regions";
                 return RedirectToAction("Index");
             }
             return View(vm);
@@ -68,7 +68,7 @@ namespace WRLDCWareHouseWebApp.Controllers
                 JobReadForeignOwners job = new JobReadForeignOwners();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
                 await job.ImportForeignOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
-                TempData["Message"] = "Completed Extracting Owners";
+                TempData["Message"] = "Completed Importing Owners";
                 return RedirectToAction("Index");
             }
             return View(vm);
@@ -84,7 +84,23 @@ namespace WRLDCWareHouseWebApp.Controllers
                 JobReadForeignConductorTypes job = new JobReadForeignConductorTypes();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
                 await job.ImportForeignConductorTypes(_context, oracleWebUatConnStr, vm.EntityWriteOption);
-                TempData["Message"] = "Completed Extracting Conductor types";
+                TempData["Message"] = "Completed Importing Conductor types";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/States
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> States([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignStates job = new JobReadForeignStates();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignStates(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing States";
                 return RedirectToAction("Index");
             }
             return View(vm);

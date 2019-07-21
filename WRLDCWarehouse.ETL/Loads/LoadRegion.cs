@@ -16,7 +16,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if region is not present, then insert
             if (existingRegion == null)
             {
-                _context.Add(region);
+                _context.Regions.Add(region);
                 await _context.SaveChangesAsync();
                 return region;
             }
@@ -31,7 +31,7 @@ namespace WRLDCWarehouse.ETL.Loads
             if (opt == EntityWriteOption.Replace && existingRegion != null)
             {
                 _context.Regions.Remove(existingRegion);
-                _context.Add(region);
+                _context.Regions.Add(region);
                 await _context.SaveChangesAsync();
                 return region;
             }

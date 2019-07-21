@@ -16,7 +16,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if entity is not present, then insert
             if (existingCondType == null)
             {
-                _context.Add(condType);
+                _context.ConductorTypes.Add(condType);
                 await _context.SaveChangesAsync();
                 return condType;
             }
@@ -31,7 +31,7 @@ namespace WRLDCWarehouse.ETL.Loads
             if (opt == EntityWriteOption.Replace && existingCondType != null)
             {
                 _context.ConductorTypes.Remove(existingCondType);
-                _context.Add(condType);
+                _context.ConductorTypes.Add(condType);
                 await _context.SaveChangesAsync();
                 return condType;
             }
