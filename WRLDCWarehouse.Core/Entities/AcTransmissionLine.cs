@@ -9,7 +9,7 @@ namespace WRLDCWarehouse.Core.Entities
     {
         public int AcTransmissionLineId { get; set; }
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public Substation FromSubstation { get; set; }
         public int FromSubstationId { get; set; }

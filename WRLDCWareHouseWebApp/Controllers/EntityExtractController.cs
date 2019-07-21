@@ -153,5 +153,21 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/AcTransmissionLines
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcTransmissionLines([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignAcTransLines job = new JobReadForeignAcTransLines();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignAcTransLines(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing AcTransmission Lines";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace TestSpace
             //TestExtractConductorTypes(oracleWebUatConnString);
             //TestExtractLineConductorTypes(oracleWebUatConnString);
             //TestExtractBuses(oracleWebUatConnString);
+            //TestExtractAcTransmissionLines(oracleWebUatConnString);
         }
 
 
@@ -105,6 +106,14 @@ namespace TestSpace
             ConductorTypeExtract condTypeExtract = new ConductorTypeExtract();
             List<AcTransLineCktCondTypeForeign> lineCondTypes = condTypeExtract.ExtractLineConductorTypesForeign(oracleWebUatConnString);
             Console.WriteLine(lineCondTypes);
+        }
+
+        public static void TestExtractAcTransmissionLines(string oracleWebUatConnString)
+        {
+            Console.WriteLine("Test - Extracting Ac TransmissionLines of foreign database");
+            AcTransLineExtract acTransLineExtract = new AcTransLineExtract();
+            List<AcTransmissionLineForeign> acTransLinesForeign = acTransLineExtract.ExtractAcTransLineForeign(oracleWebUatConnString);
+            Console.WriteLine(acTransLinesForeign);
         }
 
         public static void ConnTest(string conString)

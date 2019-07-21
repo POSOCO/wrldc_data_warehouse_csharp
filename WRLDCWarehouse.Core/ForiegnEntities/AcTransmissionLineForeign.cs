@@ -7,7 +7,7 @@ namespace WRLDCWarehouse.Core.ForiegnEntities
     public class AcTransmissionLineForeign
     {
         public int WebUatId { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public int FromSSWebUatId { get; set; }
         public int ToSSWebUatId { get; set; }
         public int VoltLevelWebUatId { get; set; }
