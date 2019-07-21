@@ -13,7 +13,7 @@ namespace WRLDCWarehouse.ETL.Loads
     {
         public async Task<VoltLevel> LoadSingleAsync(WRLDCWarehouseDbContext _context, VoltLevel voltLevel, EntityWriteOption opt)
         {
-            // check if frequencySummary already exists for the date and delete it
+            // check if entity already exists for the date and delete it
             VoltLevel existingVoltLevel = await _context.VoltLevels.SingleOrDefaultAsync(v => v.WebUatId == voltLevel.WebUatId);
 
             // if volt level is not present, then insert
