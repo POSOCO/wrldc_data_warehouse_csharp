@@ -8,9 +8,8 @@ namespace WRLDCWarehouse.Core.ForiegnEntities
     {
         // todo create seperate entity named AcTransLineCktCondTypeForeign
         public int WebUatId { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public int AcTransLineWebUatId { get; set; }
-        public int VoltLevelWebUatId { get; set; }
         public int CktNumber { get; set; }
         public decimal Length { get; set; }
         public decimal ThermalLimitMVA { get; set; }

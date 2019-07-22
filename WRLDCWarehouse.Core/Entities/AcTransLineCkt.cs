@@ -19,10 +19,7 @@ namespace WRLDCWarehouse.Core.Entities
         public int AcTransmissionLineId { get; set; }
 
         public ConductorType ConductorType { get; set; }
-        public int ConductorTypeId { get; set; }
-
-        public VoltLevel VoltLevel { get; set; }
-        public int VoltLevelId { get; set; }
+        public int? ConductorTypeId { get; set; }
 
         public IList<AcTransLineCktOwner> AcTransLineCktOwners { get; set; }
 

@@ -47,26 +47,15 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // if entity is not present, then insert
-            if (existingAcTrLine == null)
-            {
-                AcTransmissionLine newAcTrLine = new AcTransmissionLine();
-                newAcTrLine.Name = acTrForeign.Name;
-                newAcTrLine.VoltLevelId = voltLevel.VoltLevelId;
-                newAcTrLine.FromSubstationId = fromSS.SubstationId;
-                newAcTrLine.ToSubstationId = toSS.SubstationId;
-                newAcTrLine.WebUatId = acTrForeign.WebUatId;
-
-                _context.AcTransmissionLines.Add(newAcTrLine);
-                await _context.SaveChangesAsync();
-                return newAcTrLine;
-            }
-
             // check if we have to replace the entity completely
             if (opt == EntityWriteOption.Replace && existingAcTrLine != null)
             {
                 _context.AcTransmissionLines.Remove(existingAcTrLine);
+            }
 
+            // if entity is not present, then insert or check if we have to replace the entity completely
+            if (existingAcTrLine == null || (opt == EntityWriteOption.Replace && existingAcTrLine != null))
+            {
                 AcTransmissionLine newAcTrLine = new AcTransmissionLine();
                 newAcTrLine.Name = acTrForeign.Name;
                 newAcTrLine.VoltLevelId = voltLevel.VoltLevelId;

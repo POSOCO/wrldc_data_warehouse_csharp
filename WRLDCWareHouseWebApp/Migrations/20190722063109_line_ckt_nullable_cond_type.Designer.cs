@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WRLDCWarehouse.Data;
@@ -9,9 +10,10 @@ using WRLDCWarehouse.Data;
 namespace WRLDCWareHouseWebApp.Migrations
 {
     [DbContext(typeof(WRLDCWarehouseDbContext))]
-    partial class WRLDCWarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190722063109_line_ckt_nullable_cond_type")]
+    partial class line_ckt_nullable_cond_type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,6 +51,8 @@ namespace WRLDCWareHouseWebApp.Migrations
 
                     b.Property<DateTime>("TrialOperationDate");
 
+                    b.Property<int>("VoltLevelId");
+
                     b.Property<int>("WebUatId");
 
                     b.HasKey("AcTransLineCktId");
@@ -59,6 +63,8 @@ namespace WRLDCWareHouseWebApp.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("VoltLevelId");
 
                     b.HasIndex("WebUatId")
                         .IsUnique();
@@ -450,6 +456,11 @@ namespace WRLDCWareHouseWebApp.Migrations
                     b.HasOne("WRLDCWarehouse.Core.Entities.ConductorType", "ConductorType")
                         .WithMany()
                         .HasForeignKey("ConductorTypeId");
+
+                    b.HasOne("WRLDCWarehouse.Core.Entities.VoltLevel", "VoltLevel")
+                        .WithMany()
+                        .HasForeignKey("VoltLevelId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WRLDCWarehouse.Core.Entities.AcTransLineCktOwner", b =>
