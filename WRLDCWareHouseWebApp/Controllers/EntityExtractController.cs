@@ -186,5 +186,21 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/AcTransLineCktOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcTransLineCktOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignAcTransLineCktOwners job = new JobReadForeignAcTransLineCktOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignAcTransLineCktOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Ac Transmission Line Circuits Owners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

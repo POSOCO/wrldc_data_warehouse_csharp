@@ -1,14 +1,13 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class SubstationOwnerExtract
+    public class AcTransLineCktOwnerExtract
     {
-        public List<SubstationOwnerForeign> ExtractSubstationOwnersForeign(string oracleConnString)
+        public List<AcTransmissionLineCircuitOwnerForeign> ExtractAcTransLineCktOwnersForeign(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -19,7 +18,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "select ID, PARENT_ENTITY_ATTRIBUTE_ID, CHILD_ENTITY_ATTRIBUTE_ID from ENTITY_ENTITY_RELN where :id=1 and PARENT_ENTITY='ASSOCIATE_SUBSTATION' and CHILD_ENTITY='OWNER' and PARENT_ENTITY_ATTRIBUTE='Owner' and CHILD_ENTITY_ATTRIBUTE='OwnerId'";
+                        cmd.CommandText = "select ID, PARENT_ENTITY_ATTRIBUTE_ID, CHILD_ENTITY_ATTRIBUTE_ID from ENTITY_ENTITY_RELN where :id=1 and PARENT_ENTITY='AC_TRANSMISSION_LINE' and CHILD_ENTITY='OWNER' and PARENT_ENTITY_ATTRIBUTE='Owner' and CHILD_ENTITY_ATTRIBUTE='OwnerId'";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -28,19 +27,19 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<SubstationOwnerForeign> ssOwnersForeign = new List<SubstationOwnerForeign>();
+                        List<AcTransmissionLineCircuitOwnerForeign> cktOwnersForeign = new List<AcTransmissionLineCircuitOwnerForeign>();
                         while (reader.Read())
                         {
-                            SubstationOwnerForeign ssOwnerForeign = new SubstationOwnerForeign();
-                            ssOwnerForeign.WebUatId = reader.GetInt32(0);
-                            ssOwnerForeign.SubstationWebUatId = reader.GetInt32(1);
-                            ssOwnerForeign.OwnerWebUatId = reader.GetInt32(2);
-                            ssOwnersForeign.Add(ssOwnerForeign);
+                            AcTransmissionLineCircuitOwnerForeign cktOwnerForeign = new AcTransmissionLineCircuitOwnerForeign();
+                            cktOwnerForeign.WebUatId = reader.GetInt32(0);
+                            cktOwnerForeign.AcTranLineCktWebUatId = reader.GetInt32(1);
+                            cktOwnerForeign.OwnerWebUatId = reader.GetInt32(2);
+                            cktOwnersForeign.Add(cktOwnerForeign);
                         }
 
                         reader.Dispose();
 
-                        return ssOwnersForeign;
+                        return cktOwnersForeign;
                     }
                     catch (Exception ex)
                     {
