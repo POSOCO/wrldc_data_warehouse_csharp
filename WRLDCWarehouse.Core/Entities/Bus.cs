@@ -8,8 +8,10 @@ namespace WRLDCWarehouse.Core.Entities
     {
         // bus number and associate substation should be unique
         public int BusId { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public string BusNumber { get; set; }
+
+        public string BusType { get; set; }
 
         public VoltLevel VoltLevel { get; set; }
         public int VoltLevelId { get; set; }

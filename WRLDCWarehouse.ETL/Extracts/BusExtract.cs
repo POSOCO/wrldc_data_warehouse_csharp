@@ -1,7 +1,6 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.ETL.Extracts
@@ -19,9 +18,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        //Use the command to display employee names from 
-                        // the EMPLOYEES table
-                        cmd.CommandText = "select ID, BUS_NAME, BUS_NUMBER, VOLTAGE, FK_SUBSTATION_ID from BUS where :id=1 and BUS_NAME IS NOT NULL";
+                        cmd.CommandText = "select ID, BUS_NAME, BUS_NUMBER, VOLTAGE, FK_SUBSTATION_ID from BUS where 1=1 and BUS_NAME IS NOT NULL and ID IS NOT NULL and BUS_NUMBER IS NOT NULL and VOLTAGE IS NOT NULL and FK_SUBSTATION_ID IS NOT NULL";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -38,7 +35,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                             busForeign.Name = reader.GetString(1);
                             busForeign.BusNumber = reader.GetInt32(2);
                             busForeign.VoltageWebUatId = reader.GetInt32(3);
-                            busForeign.AssSubstationWebUatId = reader.GetInt32(4);
+                            busForeign.AssSubstationWebUatId = reader.GetInt32(3);
                             busesForeign.Add(busForeign);
                         }
 

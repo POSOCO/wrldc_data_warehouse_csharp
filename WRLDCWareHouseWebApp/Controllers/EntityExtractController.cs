@@ -202,5 +202,21 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/Buses
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Buses([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignBuses job = new JobReadForeignBuses();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignBuses(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Buses";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

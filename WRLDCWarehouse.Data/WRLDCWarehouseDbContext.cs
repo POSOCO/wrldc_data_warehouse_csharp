@@ -153,15 +153,14 @@ namespace WRLDCWarehouse.Data
                 .WithMany()
                 .HasForeignKey(cktOwn => cktOwn.OwnerId);
 
-            // Bus settings - Name, WebUatId are unique, combination of AcTransmissionLineId and circuit number is unique
+            // Bus settings - Name, WebUatId are unique. Combination of AcTransmissionLineId and circuit number is unique but we are unable to implement this due to non integrity in vendor db
             builder.Entity<Bus>()
             .HasIndex(b => b.Name)
             .IsUnique();
             builder.Entity<Bus>()
              .HasIndex(b => b.WebUatId)
              .IsUnique();
-            builder.Entity<Bus>().HasIndex(b => new { b.SubstationId, b.BusNumber }).IsUnique();
-
+            // builder.Entity<Bus>().HasIndex(b => new { b.SubstationId, b.BusNumber }).IsUnique();
         }
 
     }

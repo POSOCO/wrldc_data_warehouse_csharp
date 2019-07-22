@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WRLDCWarehouse.Data;
@@ -9,9 +10,10 @@ using WRLDCWarehouse.Data;
 namespace WRLDCWareHouseWebApp.Migrations
 {
     [DbContext(typeof(WRLDCWarehouseDbContext))]
-    partial class WRLDCWarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190722123159_bus_name_type_string")]
+    partial class bus_name_type_string
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,8 +126,6 @@ namespace WRLDCWareHouseWebApp.Migrations
 
                     b.Property<string>("BusNumber");
 
-                    b.Property<string>("BusType");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("SubstationId");
@@ -139,11 +139,12 @@ namespace WRLDCWareHouseWebApp.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("SubstationId");
-
                     b.HasIndex("VoltLevelId");
 
                     b.HasIndex("WebUatId")
+                        .IsUnique();
+
+                    b.HasIndex("SubstationId", "BusNumber")
                         .IsUnique();
 
                     b.ToTable("Buses");
