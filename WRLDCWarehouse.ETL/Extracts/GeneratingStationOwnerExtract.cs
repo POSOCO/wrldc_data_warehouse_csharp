@@ -1,14 +1,13 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using WRLDCWarehouse.Core.Entities;
+using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class RegionExtract
+    public class GeneratingStationOwnerExtract
     {
-        public List<Region> ExtractRegions(string oracleConnString)
+        public List<GeneratingStationOwnerForeign> ExtractGeneratingStationOwnersForeign(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -19,7 +18,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "select ID, FULL_NAME, SHORT_NAME from REGION_MASTER where :id=1 and FULL_NAME IS NOT NULL and ID IS NOT NULL and SHORT_NAME IS NOT NULL";
+                        cmd.CommandText = "select ID, PARENT_ENTITY_ATTRIBUTE_ID, CHILD_ENTITY_ATTRIBUTE_ID from ENTITY_ENTITY_RELN WHERE PARENT_ENTITY = 'GENERATING_STATION' AND PARENT_ENTITY_ATTRIBUTE='Owner' and CHILD_ENTITY='Owner' and CHILD_ENTITY_ATTRIBUTE = 'OwnerId'";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -28,19 +27,19 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<Region> regions = new List<Region>();
+                        List<GeneratingStationOwnerForeign> genStationOwnersForeign = new List<GeneratingStationOwnerForeign>();
                         while (reader.Read())
                         {
-                            Region region = new Region();
-                            region.WebUatId = reader.GetInt32(0);
-                            region.FullName = reader.GetString(1);
-                            region.ShortName = reader.GetString(2);
-                            regions.Add(region);
+                            GeneratingStationOwnerForeign genStationOwnerForeign = new GeneratingStationOwnerForeign();
+                            genStationOwnerForeign.WebUatId = reader.GetInt32(0);
+                            genStationOwnerForeign.GeneratingStationWebUatId = reader.GetInt32(1);
+                            genStationOwnerForeign.OwnerWebUatId = reader.GetInt32(2);
+                            genStationOwnersForeign.Add(genStationOwnerForeign);
                         }
 
                         reader.Dispose();
 
-                        return regions;
+                        return genStationOwnersForeign;
                     }
                     catch (Exception ex)
                     {

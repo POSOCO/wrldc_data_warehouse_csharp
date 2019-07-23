@@ -21,6 +21,7 @@ namespace WRLDCWarehouse.Data
         public DbSet<VoltLevel> VoltLevels { get; set; }
         public DbSet<ConductorType> ConductorTypes { get; set; }
         public DbSet<Fuel> Fuels { get; set; }
+        public DbSet<GeneratorClassification> GeneratorClassifications { get; set; }
         public DbSet<GenerationType> GenerationTypes { get; set; }
         public DbSet<GenerationTypeFuel> GenerationTypeFuels { get; set; }
         public DbSet<State> States { get; set; }
@@ -31,7 +32,9 @@ namespace WRLDCWarehouse.Data
         public DbSet<AcTransLineCkt> AcTransLineCkts { get; set; }
         public DbSet<AcTransLineCktOwner> AcTransLineCktOwners { get; set; }
         public DbSet<Bus> Buses { get; set; }
-        
+        public DbSet<GeneratingStation> GeneratingStations { get; set; }
+        public DbSet<GeneratingStationOwner> GeneratingStationOwners { get; set; }
+
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -194,6 +197,33 @@ namespace WRLDCWarehouse.Data
                 .HasOne(gtf => gtf.Fuel)
                 .WithMany()
                 .HasForeignKey(gtf => gtf.FuelId);
+
+            // Fuel GeneratorClassification - Name, WebUatId are unique
+            builder.Entity<GeneratorClassification>()
+            .HasIndex(gc => gc.Name)
+            .IsUnique();
+            builder.Entity<GeneratorClassification>()
+            .HasIndex(gc => gc.WebUatId)
+            .IsUnique();
+
+            // GeneratingStation settings - (Name, GeneratorClassificationId, StateId), WebUatId are unique. Only (Name, GeneratorClassificationId) should be unique, but vendor db is not compliant
+            builder.Entity<GeneratingStation>().HasIndex(gs => new { gs.Name, gs.GeneratorClassificationId, gs.StateId }).IsUnique();
+            builder.Entity<GeneratingStation>()
+             .HasIndex(gs => gs.WebUatId)
+             .IsUnique();
+
+            // Many to Many relationship of GeneratingStation Owners
+            builder.Entity<GeneratingStationOwner>().HasKey(gso => new { gso.GeneratingStationId, gso.OwnerId });
+
+            builder.Entity<GeneratingStationOwner>()
+                .HasOne(gso => gso.GeneratingStation)
+                .WithMany(gs => gs.GeneratingStationOwners)
+                .HasForeignKey(so => so.GeneratingStationId);
+
+            builder.Entity<GeneratingStationOwner>()
+                .HasOne(gso => gso.Owner)
+                .WithMany()
+                .HasForeignKey(so => so.OwnerId);
         }
 
     }

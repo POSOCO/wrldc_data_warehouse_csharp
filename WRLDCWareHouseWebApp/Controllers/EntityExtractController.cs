@@ -266,5 +266,53 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/GeneratorClassifications
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneratorClassifications([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGeneratorClassifications job = new JobReadForeignGeneratorClassifications();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGenClassifications(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generator Classifications";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/GeneratingStations
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneratingStations([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGeneratingStations job = new JobReadForeignGeneratingStations();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGeneratingStations(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generating Stations";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/GeneratingStationOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneratingStationOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGeneratingStationOwners job = new JobReadForeignGeneratingStationOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGeneratingStationOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generating StationOwners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }
