@@ -99,7 +99,7 @@ namespace WRLDCWarehouse.Data
             builder.Entity<MajorSubstation>()
              .HasIndex(ms => ms.WebUatId)
              .IsUnique();
-            
+
             // Substation settings - (Name, Classification), WebUatId are unique, default value of bus bar scheme is NA
             builder.Entity<Substation>().HasIndex(b => new { b.Name, b.Classification }).IsUnique();
             builder.Entity<Substation>()
@@ -153,10 +153,10 @@ namespace WRLDCWarehouse.Data
                 .WithMany()
                 .HasForeignKey(cktOwn => cktOwn.OwnerId);
 
-            // Bus settings - Name, WebUatId are unique. Combination of AcTransmissionLineId and circuit number is unique but we are unable to implement this due to non integrity in vendor db
-            builder.Entity<Bus>()
-            .HasIndex(b => b.Name)
-            .IsUnique();
+            // Bus settings - WebUatId is unique.Name is unique, but we are not keeping it since vendor db is not compliant. Combination of bus number and associate substation is unique, but we are unable to implement this as vendor is not compliant
+            //builder.Entity<Bus>()
+            //.HasIndex(b => b.Name)
+            //.IsUnique();
             builder.Entity<Bus>()
              .HasIndex(b => b.WebUatId)
              .IsUnique();

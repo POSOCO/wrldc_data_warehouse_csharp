@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WRLDCWarehouse.Data;
@@ -9,9 +10,10 @@ using WRLDCWarehouse.Data;
 namespace WRLDCWareHouseWebApp.Migrations
 {
     [DbContext(typeof(WRLDCWarehouseDbContext))]
-    partial class WRLDCWarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190723064548_bus_name_unique_remove")]
+    partial class bus_name_unique_remove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
