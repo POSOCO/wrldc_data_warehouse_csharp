@@ -218,5 +218,53 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/Fuels
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Fuels([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignFuels job = new JobReadForeignFuels();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignFuels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Fuels";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/GenerationTypes
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerationTypes([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGenerationTypes job = new JobReadForeignGenerationTypes();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGenerationTypes(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generation Types";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/GenerationTypeFuels
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerationTypeFuels([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGenerationTypeFuels job = new JobReadForeignGenerationTypeFuels();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGenerationTypeFuels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generation Type Fuels";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

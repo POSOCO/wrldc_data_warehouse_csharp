@@ -20,6 +20,9 @@ namespace WRLDCWarehouse.Data
         public DbSet<Owner> Owners { get; set; }
         public DbSet<VoltLevel> VoltLevels { get; set; }
         public DbSet<ConductorType> ConductorTypes { get; set; }
+        public DbSet<Fuel> Fuels { get; set; }
+        public DbSet<GenerationType> GenerationTypes { get; set; }
+        public DbSet<GenerationTypeFuel> GenerationTypeFuels { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<MajorSubstation> MajorSubstations { get; set; }
         public DbSet<Substation> Substations { get; set; }
@@ -28,6 +31,7 @@ namespace WRLDCWarehouse.Data
         public DbSet<AcTransLineCkt> AcTransLineCkts { get; set; }
         public DbSet<AcTransLineCktOwner> AcTransLineCktOwners { get; set; }
         public DbSet<Bus> Buses { get; set; }
+        
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -161,6 +165,35 @@ namespace WRLDCWarehouse.Data
              .HasIndex(b => b.WebUatId)
              .IsUnique();
             // builder.Entity<Bus>().HasIndex(b => new { b.SubstationId, b.BusNumber }).IsUnique();
+
+            // Fuel Settings - Name, WebUatId are unique
+            builder.Entity<Fuel>()
+            .HasIndex(f => f.Name)
+            .IsUnique();
+            builder.Entity<Fuel>()
+            .HasIndex(f => f.WebUatId)
+            .IsUnique();
+
+            // GenerationType Settings - Name, WebUatId are unique
+            builder.Entity<GenerationType>()
+            .HasIndex(gt => gt.Name)
+            .IsUnique();
+            builder.Entity<GenerationType>()
+            .HasIndex(gt => gt.WebUatId)
+            .IsUnique();
+
+            // Many to Many relationship of GenerationTypeFuel
+            builder.Entity<GenerationTypeFuel>().HasKey(gtf => new { gtf.GenerationTypeId, gtf.FuelId });
+
+            builder.Entity<GenerationTypeFuel>()
+                .HasOne(gtf => gtf.GenerationType)
+                .WithMany()
+                .HasForeignKey(gtf => gtf.GenerationTypeId);
+
+            builder.Entity<GenerationTypeFuel>()
+                .HasOne(gtf => gtf.Fuel)
+                .WithMany()
+                .HasForeignKey(gtf => gtf.FuelId);
         }
 
     }
