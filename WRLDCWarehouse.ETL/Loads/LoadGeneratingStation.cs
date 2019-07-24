@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadGeneratingStation
     {
-        public async Task<GeneratingStation> LoadSingleAsync(WRLDCWarehouseDbContext _context, GeneratingStationForeign genStationForeign, EntityWriteOption opt)
+        public async Task<GeneratingStation> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, GeneratingStationForeign genStationForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             GeneratingStation existingGenStation = await _context.GeneratingStations.SingleOrDefaultAsync(ss => ss.WebUatId == genStationForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if GeneratorClassification doesnot exist, skip the import. Ideally, there should not be such case
             if (genClassification == null)
             {
+                _log.LogCritical($"Could not find GeneratorClassification with WebUatId {genClassificationWebUatId} in warehouse while creating Generating Station with WebUat Id {genStationForeign.WebUatId} and name {genStationForeign.Name}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if GenerationType doesnot exist, skip the import. Ideally, there should not be such case
             if (genType == null)
             {
+                _log.LogCritical($"Could not find GenerationType with WebUatId {genTypeWebUatId} in warehouse while creating Generating Station with WebUat Id {genStationForeign.WebUatId} and name {genStationForeign.Name}");
                 return null;
             }
 
@@ -44,6 +47,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if state doesnot exist, skip the import. Ideally, there should not be such case
             if (state == null)
             {
+                _log.LogCritical($"Could not find State with WebUatId {stateWebUatId} in warehouse while creating Generating Station with WebUat Id {genStationForeign.WebUatId} and name {genStationForeign.Name}");
                 return null;
             }
 
@@ -53,6 +57,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if fuel doesnot exist, skip the import. Ideally, there should not be such case
             if (fuel == null)
             {
+                _log.LogCritical($"Could not find Fuel with WebUatId {fuelWebUatId} in warehouse while creating Generating Station with WebUat Id {genStationForeign.WebUatId} and name {genStationForeign.Name}");
                 return null;
             }
 

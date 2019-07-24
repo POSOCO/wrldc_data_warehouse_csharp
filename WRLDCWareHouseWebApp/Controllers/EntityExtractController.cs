@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WRLDCWarehouse.Data;
 using WRLDCWarehouse.ETL.Jobs;
 using WRLDCWareHouseWebApp.ViewModels;
@@ -13,12 +14,15 @@ namespace WRLDCWareHouseWebApp.Controllers
     public class EntityExtractController : Controller
     {
         private readonly WRLDCWarehouseDbContext _context;
+        private readonly ILogger<EntityExtractController> _log;
+
         public IConfiguration Configuration { get; }
 
-        public EntityExtractController(WRLDCWarehouseDbContext context, IConfiguration configuration)
+        public EntityExtractController(WRLDCWarehouseDbContext context, IConfiguration configuration, ILogger<EntityExtractController> log)
         {
             _context = context;
             Configuration = configuration;
+            _log = log;
         }
 
         public IActionResult Index()
@@ -292,7 +296,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignGeneratingStations job = new JobReadForeignGeneratingStations();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignGeneratingStations(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignGeneratingStations(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generating Stations";
                 return RedirectToAction("Index");
             }
