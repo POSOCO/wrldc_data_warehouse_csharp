@@ -6,12 +6,13 @@ using WRLDCWarehouse.ETL.Extracts;
 using WRLDCWarehouse.ETL.Loads;
 using WRLDCWarehouse.ETL.Enums;
 using WRLDCWarehouse.Core.ForiegnEntities;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignStates
     {
-        public async Task ImportForeignStates(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignStates(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             StateExtract stateExtract = new StateExtract();
             List<StateForeign> stateForeigns = stateExtract.ExtractStatesForeign(oracleConnStr);
@@ -19,7 +20,7 @@ namespace WRLDCWarehouse.ETL.Jobs
             LoadState loadState = new LoadState();
             foreach (StateForeign stateForeign in stateForeigns)
             {
-                State insertedRegion = await loadState.LoadSingleAsync(_context, stateForeign, opt);
+                State insertedState = await loadState.LoadSingleAsync(_context, _log, stateForeign, opt);
             }
         }
     }

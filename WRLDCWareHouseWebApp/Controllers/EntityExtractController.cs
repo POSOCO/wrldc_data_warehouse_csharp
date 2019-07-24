@@ -103,7 +103,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignStates job = new JobReadForeignStates();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignStates(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignStates(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing States";
                 return RedirectToAction("Index");
             }
@@ -314,6 +314,22 @@ namespace WRLDCWareHouseWebApp.Controllers
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
                 await job.ImportForeignGeneratingStationOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generating StationOwners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/GeneratorStages
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GeneratorStages([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignGeneratorStages job = new JobReadForeignGeneratorStages();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignGeneratorStages(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Generator Stages";
                 return RedirectToAction("Index");
             }
             return View(vm);
