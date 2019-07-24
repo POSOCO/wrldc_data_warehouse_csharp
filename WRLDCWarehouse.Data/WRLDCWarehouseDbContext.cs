@@ -35,6 +35,7 @@ namespace WRLDCWarehouse.Data
         public DbSet<GeneratingStation> GeneratingStations { get; set; }
         public DbSet<GeneratingStationOwner> GeneratingStationOwners { get; set; }
         public DbSet<GeneratorStage> GeneratorStages { get; set; }
+        public DbSet<GeneratorUnit> GeneratorUnits { get; set; }
 
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
@@ -229,6 +230,12 @@ namespace WRLDCWarehouse.Data
             // GeneratorStage settings - (Name, GeneratingStationId), WebUatId are unique.
             builder.Entity<GeneratorStage>().HasIndex(gs => new { gs.Name, gs.GeneratingStationId}).IsUnique();
             builder.Entity<GeneratorStage>()
+             .HasIndex(gs => gs.WebUatId)
+             .IsUnique();
+
+            // GeneratorUnit settings - (UnitNumber, GeneratingStationId, GeneratorStageId), WebUatId are unique.
+            builder.Entity<GeneratorUnit>().HasIndex(gu => new { gu.UnitNumber, gu.GeneratingStationId, gu.GeneratorStageId }).IsUnique();
+            builder.Entity<GeneratorUnit>()
              .HasIndex(gs => gs.WebUatId)
              .IsUnique();
         }
