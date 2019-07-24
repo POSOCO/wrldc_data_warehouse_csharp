@@ -6,12 +6,13 @@ using WRLDCWarehouse.ETL.Extracts;
 using WRLDCWarehouse.ETL.Loads;
 using WRLDCWarehouse.ETL.Enums;
 using WRLDCWarehouse.Core.ForiegnEntities;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignAcTransLineCktOwners
     {
-        public async Task ImportForeignAcTransLineCktOwners(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignAcTransLineCktOwners(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             AcTransLineCktOwnerExtract acCktOwnerExtract = new AcTransLineCktOwnerExtract();
             List<AcTransmissionLineCircuitOwnerForeign> acCktOwnersForeign = acCktOwnerExtract.ExtractAcTransLineCktOwnersForeign(oracleConnStr);
@@ -19,7 +20,7 @@ namespace WRLDCWarehouse.ETL.Jobs
             LoadAcTransCktOwner loadAcCktOwner = new LoadAcTransCktOwner();
             foreach (AcTransmissionLineCircuitOwnerForeign acCktOwnerForeign in acCktOwnersForeign)
             {
-                AcTransLineCktOwner insertedAcCktOwner = await loadAcCktOwner.LoadSingleAsync(_context, acCktOwnerForeign, opt);
+                AcTransLineCktOwner insertedAcCktOwner = await loadAcCktOwner.LoadSingleAsync(_context, _log, acCktOwnerForeign, opt);
             }
         }
     }

@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadMajorSubstation
     {
-        public async Task<MajorSubstation> LoadSingleAsync(WRLDCWarehouseDbContext _context, MajorSubstationForeign majorSSForeign, EntityWriteOption opt)
+        public async Task<MajorSubstation> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, MajorSubstationForeign majorSSForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             MajorSubstation existingMajorSS = await _context.MajorSubstations.SingleOrDefaultAsync(mss => mss.WebUatId == majorSSForeign.WebUatId);
@@ -27,6 +28,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if state doesnot exist, skip the import. Ideally, there should not be such case
             if (majorSSState == null)
             {
+                _log.LogCritical($"Unable to find State with webUatId {stateWebUatId} while inserting MajorSubstation with webUatId {majorSSForeign.WebUatId} and name {majorSSForeign.Name}");
                 return null;
             }
 

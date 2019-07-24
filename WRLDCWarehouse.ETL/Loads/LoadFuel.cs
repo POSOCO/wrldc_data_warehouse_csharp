@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadFuel
     {
-        public async Task<Fuel> LoadSingleAsync(WRLDCWarehouseDbContext _context, Fuel fuel, EntityWriteOption opt)
+        public async Task<Fuel> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, Fuel fuel, EntityWriteOption opt)
         {
             // check if entity already exists
             Fuel existingFuel = await _context.Fuels.SingleOrDefaultAsync(r => r.WebUatId == fuel.WebUatId);

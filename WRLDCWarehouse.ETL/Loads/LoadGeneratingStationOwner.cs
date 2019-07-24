@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadGeneratingStationOwner
     {
-        public async Task<GeneratingStationOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, GeneratingStationOwnerForeign genStationOwnerForeign, EntityWriteOption opt)
+        public async Task<GeneratingStationOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, GeneratingStationOwnerForeign genStationOwnerForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             GeneratingStationOwner existingGenStationOwner = await _context.GeneratingStationOwners.SingleOrDefaultAsync(gso => gso.WebUatId == genStationOwnerForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if GeneratingStation doesnot exist, skip the import. Ideally, there should not be such case
             if (genStation == null)
             {
+                _log.LogCritical($"Unable to find GeneratingStation with webUatId {genStationWebUatId} while inserting GeneratingStationOwner with webUatId {genStationOwnerForeign.WebUatId}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if owner doesnot exist, skip the import. Ideally, there should not be such case
             if (owner == null)
             {
+                _log.LogCritical($"Unable to find Owner with webUatId {ownerWebUatId} while inserting GeneratingStationOwner with webUatId {genStationOwnerForeign.WebUatId}");
                 return null;
             }
 

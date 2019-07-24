@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadGenerationTypeFuel
     {
-        public async Task<GenerationTypeFuel> LoadSingleAsync(WRLDCWarehouseDbContext _context, GenerationTypeFuelForeign genTypeFuelForeign, EntityWriteOption opt)
+        public async Task<GenerationTypeFuel> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, GenerationTypeFuelForeign genTypeFuelForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             GenerationTypeFuel existingGenTypeFuel = await _context.GenerationTypeFuels.SingleOrDefaultAsync(gtf => gtf.WebUatId == genTypeFuelForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if GenerationType doesnot exist, skip the import. Ideally, there should not be such case
             if (genType == null)
             {
+                _log.LogCritical($"Unable to find GenerationType with webUatId {genTypeWebUatId} while inserting GenerationTypeFuel with webUatId {genTypeFuelForeign.WebUatId}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if fuel doesnot exist, skip the import. Ideally, there should not be such case
             if (fuel == null)
             {
+                _log.LogCritical($"Unable to find Fuel with webUatId {fuelWebUatId} while inserting GenerationTypeFuel with webUatId {genTypeFuelForeign.WebUatId}");
                 return null;
             }
 

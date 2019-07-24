@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadRegion
     {
-        public async Task<Region> LoadSingleAsync(WRLDCWarehouseDbContext _context, Region region, EntityWriteOption opt)
+        public async Task<Region> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, Region region, EntityWriteOption opt)
         {
             // check if entity already exists
             Region existingRegion = await _context.Regions.SingleOrDefaultAsync(r => r.WebUatId == region.WebUatId);

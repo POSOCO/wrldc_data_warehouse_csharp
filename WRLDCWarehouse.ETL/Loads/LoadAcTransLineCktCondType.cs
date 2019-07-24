@@ -4,18 +4,20 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadAcTransLineCktCondType
     {
-        public async Task<AcTransLineCkt> LoadSingleAsync(WRLDCWarehouseDbContext _context, AcTransLineCktCondTypeForeign acLineCondTypeForeign, EntityWriteOption opt)
+        public async Task<AcTransLineCkt> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, AcTransLineCktCondTypeForeign acLineCondTypeForeign, EntityWriteOption opt)
         {
             // get the conductor type of the entity
             ConductorType condType = await _context.ConductorTypes.SingleOrDefaultAsync(ct => ct.WebUatId == acLineCondTypeForeign.CondTypeWebUatId);
             // if conductor type doesnot exist, skip the import. Ideally, there should not be such case
             if (condType == null)
             {
+                _log.LogCritical($"Unable to find ConductorType with webUatId {acLineCondTypeForeign.CondTypeWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId}");
                 return null;
             }
 
@@ -24,6 +26,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if ac transmission line ckt doesnot exist, skip the import. Ideally, there should not be such case
             if (existingAcTransLineCkt == null)
             {
+                _log.LogCritical($"Unable to find AcTransLineCkt with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId}");
                 return null;
             }
 

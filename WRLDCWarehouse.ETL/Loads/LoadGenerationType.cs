@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadGenerationType
     {
-        public async Task<GenerationType> LoadSingleAsync(WRLDCWarehouseDbContext _context, GenerationType genType, EntityWriteOption opt)
+        public async Task<GenerationType> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, GenerationType genType, EntityWriteOption opt)
         {
             // check if entity already exists
             GenerationType existingGenType = await _context.GenerationTypes.SingleOrDefaultAsync(gt => gt.WebUatId == genType.WebUatId);

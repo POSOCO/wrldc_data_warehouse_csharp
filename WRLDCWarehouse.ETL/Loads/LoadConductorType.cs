@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadConductorType
     {
-        public async Task<ConductorType> LoadSingleAsync(WRLDCWarehouseDbContext _context, ConductorType condType, EntityWriteOption opt)
+        public async Task<ConductorType> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, ConductorType condType, EntityWriteOption opt)
         {
             // check if frequencySummary already exists for the date and delete it
             ConductorType existingCondType = await _context.ConductorTypes.SingleOrDefaultAsync(ct => ct.WebUatId == condType.WebUatId);

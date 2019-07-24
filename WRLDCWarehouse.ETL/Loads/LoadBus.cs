@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadBus
     {
-        public async Task<Bus> LoadSingleAsync(WRLDCWarehouseDbContext _context, BusForeign busForeign, EntityWriteOption opt)
+        public async Task<Bus> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, BusForeign busForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             Bus existingBus = await _context.Buses.SingleOrDefaultAsync(b => b.WebUatId == busForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if Substation doesnot exist, skip the import. Ideally, there should not be such case
             if (busSubstation == null)
             {
+                _log.LogCritical($"Unable to find Substation with webUatId {subWebUatId} while inserting Bus with webUatId {busForeign.WebUatId} and name {busForeign.Name}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if voltLevel doesnot exist, skip the import. Ideally, there should not be such case
             if (voltLevel == null)
             {
+                _log.LogCritical($"Unable to find VoltLevel with webUatId {voltLevelWebUatId} while inserting Bus with webUatId {busForeign.WebUatId} and name {busForeign.Name}");
                 return null;
             }
 

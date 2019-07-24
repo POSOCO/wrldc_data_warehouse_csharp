@@ -6,12 +6,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadVoltageLevel
     {
-        public async Task<VoltLevel> LoadSingleAsync(WRLDCWarehouseDbContext _context, VoltLevel voltLevel, EntityWriteOption opt)
+        public async Task<VoltLevel> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, VoltLevel voltLevel, EntityWriteOption opt)
         {
             // check if entity already exists for the date and delete it
             VoltLevel existingVoltLevel = await _context.VoltLevels.SingleOrDefaultAsync(v => v.WebUatId == voltLevel.WebUatId);

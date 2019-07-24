@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadAcTransmissionLineCkt
     {
-        public async Task<AcTransLineCkt> LoadSingleAsync(WRLDCWarehouseDbContext _context, AcTransmissionLineCircuitForeign acTrLineCktForeign, EntityWriteOption opt)
+        public async Task<AcTransLineCkt> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, AcTransmissionLineCircuitForeign acTrLineCktForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             AcTransLineCkt existingAcTrLineCkt = await _context.AcTransLineCkts.SingleOrDefaultAsync(acCkt => acCkt.WebUatId == acTrLineCktForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if AcTransmissionLine doesnot exist, skip the import. Ideally, there should not be such case
             if (acTrLine == null)
             {
+                _log.LogCritical($"Unable to find AcTransmissionLine with webUatId {acTransLineWebUatId} while inserting AcTransLineCkt with webUatId {acTrLineCktForeign.WebUatId} and name {acTrLineCktForeign.Name}");
                 return null;
             }
 

@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadAcTransCktOwner
     {
-        public async Task<AcTransLineCktOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, AcTransmissionLineCircuitOwnerForeign acCktOwnerForeign, EntityWriteOption opt)
+        public async Task<AcTransLineCktOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, AcTransmissionLineCircuitOwnerForeign acCktOwnerForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             AcTransLineCktOwner existingAcCktOwner = await _context.AcTransLineCktOwners.SingleOrDefaultAsync(aco => aco.WebUatId == acCktOwnerForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if AcTransLineCkt doesnot exist, skip the import. Ideally, there should not be such case
             if (acTransCkt == null)
             {
+                _log.LogCritical($"Could not find AcTransLineCkt with WebUatId {acCktWebUatId} in warehouse while creating AcTransLineCktOwner with WebUat Id {acCktOwnerForeign.WebUatId}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if owner doesnot exist, skip the import. Ideally, there should not be such case
             if (owner == null)
             {
+                _log.LogCritical($"Could not find Owner with WebUatId {ownerWebUatId} in warehouse while creating AcTransLineCktOwner with WebUat Id {acCktOwnerForeign.WebUatId}");
                 return null;
             }
 

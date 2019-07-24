@@ -6,12 +6,13 @@ using WRLDCWarehouse.ETL.Extracts;
 using WRLDCWarehouse.ETL.Loads;
 using WRLDCWarehouse.ETL.Enums;
 using WRLDCWarehouse.Core.ForiegnEntities;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignSubstations
     {
-        public async Task ImportForeignSubstations(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignSubstations(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             SubstationExtract ssExtract = new SubstationExtract();
             List<SubstationForeign> ssForeignList = ssExtract.ExtractSubstationsForeign(oracleConnStr);
@@ -19,7 +20,7 @@ namespace WRLDCWarehouse.ETL.Jobs
             LoadSubstation loadSS = new LoadSubstation();
             foreach (SubstationForeign ssForeign in ssForeignList)
             {
-                Substation insertedSS = await loadSS.LoadSingleAsync(_context, ssForeign, opt);
+                Substation insertedSS = await loadSS.LoadSingleAsync(_context, _log, ssForeign, opt);
             }
         }
     }

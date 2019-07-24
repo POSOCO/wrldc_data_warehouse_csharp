@@ -4,12 +4,13 @@ using WRLDCWarehouse.Core.Entities;
 using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadAcTransmissionLine
     {
-        public async Task<AcTransmissionLine> LoadSingleAsync(WRLDCWarehouseDbContext _context, AcTransmissionLineForeign acTrForeign, EntityWriteOption opt)
+        public async Task<AcTransmissionLine> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, AcTransmissionLineForeign acTrForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             AcTransmissionLine existingAcTrLine = await _context.AcTransmissionLines.SingleOrDefaultAsync(acTr => acTr.WebUatId == acTrForeign.WebUatId);
@@ -26,6 +27,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if FromSubstation doesnot exist, skip the import. Ideally, there should not be such case
             if (fromSS == null)
             {
+                _log.LogCritical($"Unable to find FromSubstation with webUatId {fromSSebUatId} while inserting AcTransmissionLine with webUatId {acTrForeign.WebUatId} and name {acTrForeign.Name}");
                 return null;
             }
 
@@ -35,6 +37,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if ToSubstation doesnot exist, skip the import. Ideally, there should not be such case
             if (toSS == null)
             {
+                _log.LogCritical($"Unable to find ToSubstation with webUatId {toSSebUatId} while inserting AcTransmissionLine with webUatId {acTrForeign.WebUatId} and name {acTrForeign.Name}");
                 return null;
             }
 
@@ -44,6 +47,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if voltage level doesnot exist, skip the import. Ideally, there should not be such case
             if (voltLevel == null)
             {
+                _log.LogCritical($"Unable to find VoltLevel with webUatId {voltWebUatId} while inserting AcTransmissionLine with webUatId {acTrForeign.WebUatId} and name {acTrForeign.Name}");
                 return null;
             }
 

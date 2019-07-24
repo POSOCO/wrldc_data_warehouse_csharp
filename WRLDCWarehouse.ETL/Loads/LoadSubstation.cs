@@ -5,12 +5,13 @@ using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadSubstation
     {
-        public async Task<Substation> LoadSingleAsync(WRLDCWarehouseDbContext _context, SubstationForeign ssForeign, EntityWriteOption opt)
+        public async Task<Substation> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, SubstationForeign ssForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             Substation existingSS = await _context.Substations.SingleOrDefaultAsync(ss => ss.WebUatId == ssForeign.WebUatId);
@@ -27,6 +28,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if major Substation doesnot exist, skip the import. Ideally, there should not be such case
             if (majorSS == null)
             {
+                _log.LogCritical($"Unable to find MajorSubstation with webUatId {majorSSebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
                 return null;
             }
 
@@ -36,6 +38,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if voltage level doesnot exist, skip the import. Ideally, there should not be such case
             if (voltLevel == null)
             {
+                _log.LogCritical($"Unable to find VoltLevel with webUatId {voltWebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
                 return null;
             }
 
@@ -51,6 +54,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if state doesnot exist, skip the import. Ideally, there should not be such case
             if (state == null)
             {
+                _log.LogCritical($"Unable to find State with webUatId {stateWebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
                 return null;
             }
 

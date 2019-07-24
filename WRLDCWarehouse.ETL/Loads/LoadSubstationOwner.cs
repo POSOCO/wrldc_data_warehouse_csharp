@@ -5,12 +5,13 @@ using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadSubstationOwner
     {
-        public async Task<SubstationOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, SubstationOwnerForeign ssOwnerForeign, EntityWriteOption opt)
+        public async Task<SubstationOwner> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, SubstationOwnerForeign ssOwnerForeign, EntityWriteOption opt)
         {
             // check if entity already exists
             SubstationOwner existingSSOwner = await _context.SubstationOwners.SingleOrDefaultAsync(ssO => ssO.WebUatId == ssOwnerForeign.WebUatId);
@@ -27,6 +28,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if Substation doesnot exist, skip the import. Ideally, there should not be such case
             if (substation == null)
             {
+                _log.LogCritical($"Unable to find Substation with webUatId {ssWebUatId} while inserting SubstationOwner with webUatId {ssOwnerForeign.WebUatId}");
                 return null;
             }
 
@@ -36,6 +38,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if owner doesnot exist, skip the import. Ideally, there should not be such case
             if (owner == null)
             {
+                _log.LogCritical($"Unable to find Owner with webUatId {ownerWebUatId} while inserting SubstationOwner with webUatId {ssOwnerForeign.WebUatId}");
                 return null;
             }
 

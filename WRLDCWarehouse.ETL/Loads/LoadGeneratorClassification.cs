@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadGeneratorClassification
     {
-        public async Task<GeneratorClassification> LoadSingleAsync(WRLDCWarehouseDbContext _context, GeneratorClassification genClassification, EntityWriteOption opt)
+        public async Task<GeneratorClassification> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, GeneratorClassification genClassification, EntityWriteOption opt)
         {
             // check if entity already exists
             GeneratorClassification existingGenClassification = await _context.GeneratorClassifications.SingleOrDefaultAsync(gc => gc.WebUatId == genClassification.WebUatId);

@@ -3,12 +3,13 @@ using WRLDCWarehouse.Data;
 using WRLDCWarehouse.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
     public class LoadOwner
     {
-        public async Task<Owner> LoadSingleAsync(WRLDCWarehouseDbContext _context, Owner owner, EntityWriteOption opt)
+        public async Task<Owner> LoadSingleAsync(WRLDCWarehouseDbContext _context, ILogger _log, Owner owner, EntityWriteOption opt)
         {
             // check if entity already exists
             Owner existingOwner = await _context.Owners.SingleOrDefaultAsync(o => o.WebUatId == owner.WebUatId);

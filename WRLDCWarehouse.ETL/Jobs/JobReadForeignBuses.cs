@@ -6,12 +6,13 @@ using WRLDCWarehouse.ETL.Extracts;
 using WRLDCWarehouse.ETL.Loads;
 using WRLDCWarehouse.ETL.Enums;
 using WRLDCWarehouse.Core.ForiegnEntities;
+using Microsoft.Extensions.Logging;
 
 namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignBuses
     {
-        public async Task ImportForeignBuses(WRLDCWarehouseDbContext _context, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignBuses(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             BusExtract busExtract = new BusExtract();
             List<BusForeign> busForeigns = busExtract.ExtractBusesForeign(oracleConnStr);
@@ -19,7 +20,7 @@ namespace WRLDCWarehouse.ETL.Jobs
             LoadBus loadBus = new LoadBus();
             foreach (BusForeign busForeign in busForeigns)
             {
-                Bus insertedBus = await loadBus.LoadSingleAsync(_context, busForeign, opt);
+                Bus insertedBus = await loadBus.LoadSingleAsync(_context, _log, busForeign, opt);
             }
         }
     }

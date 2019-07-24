@@ -39,7 +39,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignVoltageLevels job = new JobReadForeignVoltageLevels();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignVoltageLevels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignVoltageLevels(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Voltage Levels";
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignRegions job = new JobReadForeignRegions();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignRegions(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignRegions(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Regions";
                 return RedirectToAction("Index");
             }
@@ -71,7 +71,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignOwners job = new JobReadForeignOwners();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Owners";
                 return RedirectToAction("Index");
             }
@@ -87,7 +87,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignConductorTypes job = new JobReadForeignConductorTypes();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignConductorTypes(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignConductorTypes(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Conductor types";
                 return RedirectToAction("Index");
             }
@@ -119,7 +119,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignMajorSubstations job = new JobReadForeignMajorSubstations();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignMajorSubstations(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignMajorSubstations(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Major Substations";
                 return RedirectToAction("Index");
             }
@@ -135,7 +135,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignSubstations job = new JobReadForeignSubstations();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignSubstations(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignSubstations(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Substations";
                 return RedirectToAction("Index");
             }
@@ -151,7 +151,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignSubstationOwners job = new JobReadForeignSubstationOwners();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignSubstationOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignSubstationOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Substation Owners";
                 return RedirectToAction("Index");
             }
@@ -167,7 +167,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignAcTransLines job = new JobReadForeignAcTransLines();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignAcTransLines(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignAcTransLines(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing AcTransmission Lines";
                 return RedirectToAction("Index");
             }
@@ -183,8 +183,8 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignAcTransLineCkts job = new JobReadForeignAcTransLineCkts();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignAcTransLineCkts(_context, oracleWebUatConnStr, vm.EntityWriteOption);
-                await job.ImportForeignAcTransLineCktCondTypes(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignAcTransLineCkts(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignAcTransLineCktCondTypes(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Ac Transmission Line Circuits along with conductor types";
                 return RedirectToAction("Index");
             }
@@ -200,7 +200,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignAcTransLineCktOwners job = new JobReadForeignAcTransLineCktOwners();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignAcTransLineCktOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignAcTransLineCktOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Ac Transmission Line Circuits Owners";
                 return RedirectToAction("Index");
             }
@@ -216,7 +216,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignBuses job = new JobReadForeignBuses();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignBuses(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignBuses(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Buses";
                 return RedirectToAction("Index");
             }
@@ -232,7 +232,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignFuels job = new JobReadForeignFuels();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignFuels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignFuels(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Fuels";
                 return RedirectToAction("Index");
             }
@@ -248,7 +248,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignGenerationTypes job = new JobReadForeignGenerationTypes();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignGenerationTypes(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignGenerationTypes(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generation Types";
                 return RedirectToAction("Index");
             }
@@ -264,7 +264,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignGenerationTypeFuels job = new JobReadForeignGenerationTypeFuels();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignGenerationTypeFuels(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignGenerationTypeFuels(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generation Type Fuels";
                 return RedirectToAction("Index");
             }
@@ -280,7 +280,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignGeneratorClassifications job = new JobReadForeignGeneratorClassifications();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignGenClassifications(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignGenClassifications(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generator Classifications";
                 return RedirectToAction("Index");
             }
@@ -312,7 +312,7 @@ namespace WRLDCWareHouseWebApp.Controllers
             {
                 JobReadForeignGeneratingStationOwners job = new JobReadForeignGeneratingStationOwners();
                 string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
-                await job.ImportForeignGeneratingStationOwners(_context, oracleWebUatConnStr, vm.EntityWriteOption);
+                await job.ImportForeignGeneratingStationOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
                 TempData["Message"] = "Completed Importing Generating StationOwners";
                 return RedirectToAction("Index");
             }
