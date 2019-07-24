@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WRLDCWarehouse.Core.Entities
@@ -8,6 +9,7 @@ namespace WRLDCWarehouse.Core.Entities
     {
         // bus number and associate substation should be unique
         public int BusId { get; set; }
+        [Required]
         public string Name { get; set; }
         public string BusNumber { get; set; }
 

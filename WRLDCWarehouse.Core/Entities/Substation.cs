@@ -22,7 +22,9 @@ namespace WRLDCWarehouse.Core.Entities
 
         public IList<SubstationOwner> SubstationOwners { get; set; }
 
+        [Required]
         public string Classification { get; set; }
+        [Required]
         public string BusbarScheme { get; set; }
         public DateTime CommDate { get; set; }
         public DateTime CodDate { get; set; }
