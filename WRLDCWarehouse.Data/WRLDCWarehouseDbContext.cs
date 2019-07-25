@@ -36,7 +36,9 @@ namespace WRLDCWarehouse.Data
         public DbSet<GeneratingStationOwner> GeneratingStationOwners { get; set; }
         public DbSet<GeneratorStage> GeneratorStages { get; set; }
         public DbSet<GeneratorUnit> GeneratorUnits { get; set; }
-
+        public DbSet<TransformerType> TransformerTypes { get; set; }
+        public DbSet<Transformer> Transformers { get; set; }
+        public DbSet<TransformerOwner> TransformerOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -238,6 +240,35 @@ namespace WRLDCWarehouse.Data
             builder.Entity<GeneratorUnit>()
              .HasIndex(gs => gs.WebUatId)
              .IsUnique();
+
+            // TransformerType settings - Name, WebUatId are unique.
+            builder.Entity<TransformerType>()
+             .HasIndex(tt => tt.Name)
+             .IsUnique();
+            builder.Entity<TransformerType>()
+             .HasIndex(tt => tt.WebUatId)
+             .IsUnique();
+
+            // Transformer settings - Name, WebUatId are unique.
+            builder.Entity<Transformer>()
+             .HasIndex(tt => tt.Name)
+             .IsUnique();
+            builder.Entity<Transformer>()
+             .HasIndex(tt => tt.WebUatId)
+             .IsUnique();
+
+            // Many to Many relationship of TransformerOwners
+            builder.Entity<TransformerOwner>().HasKey(to => new { to.TransformerId, to.OwnerId });
+
+            builder.Entity<TransformerOwner>()
+                .HasOne(to => to.Transformer)
+                .WithMany(tr => tr.TransformerOwners)
+                .HasForeignKey(to => to.TransformerId);
+
+            builder.Entity<TransformerOwner>()
+                .HasOne(to => to.Owner)
+                .WithMany()
+                .HasForeignKey(to => to.OwnerId);
         }
 
     }
