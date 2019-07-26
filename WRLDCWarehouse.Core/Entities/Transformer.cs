@@ -6,7 +6,7 @@ namespace WRLDCWarehouse.Core.Entities
 {
     public class Transformer
     {
-        public int TransfomerId { get; set; }
+        public int TransformerId { get; set; }
 
         [Required]
         public string Name { get; set; }

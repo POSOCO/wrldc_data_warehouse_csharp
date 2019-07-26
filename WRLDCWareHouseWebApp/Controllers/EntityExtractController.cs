@@ -350,5 +350,53 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/TransformerTypes
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TransformerTypes([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignTransformerTypes job = new JobReadForeignTransformerTypes();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignTransformerTypes(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Transformer Types";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/Transformers
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Transformers([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignTransformers job = new JobReadForeignTransformers();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignTransformers(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Transformers";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/TransformerOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TransformerOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignTransformerOwners job = new JobReadForeignTransformerOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignTransformerOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Transformer Owners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

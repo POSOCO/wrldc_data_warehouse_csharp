@@ -42,24 +42,15 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // if entity is not present, then insert
-            if (existingSSOwner == null)
-            {
-                SubstationOwner newSSOwner = new SubstationOwner();
-                newSSOwner.OwnerId = owner.OwnerId;
-                newSSOwner.SubstationId = substation.SubstationId;
-                newSSOwner.WebUatId = ssOwnerForeign.WebUatId;
-
-                _context.SubstationOwners.Add(newSSOwner);
-                await _context.SaveChangesAsync();
-                return newSSOwner;
-            }
-
             // check if we have to replace the entity completely
             if (opt == EntityWriteOption.Replace && existingSSOwner != null)
             {
                 _context.SubstationOwners.Remove(existingSSOwner);
+            }
 
+            // if entity is not present, then insert or check if we have to replace the entity completely
+            if (existingSSOwner == null || (opt == EntityWriteOption.Replace && existingSSOwner != null))
+            {
                 SubstationOwner newSSOwner = new SubstationOwner();
                 newSSOwner.OwnerId = owner.OwnerId;
                 newSSOwner.SubstationId = substation.SubstationId;

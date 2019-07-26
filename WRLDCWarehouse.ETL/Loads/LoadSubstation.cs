@@ -23,12 +23,12 @@ namespace WRLDCWarehouse.ETL.Loads
             }
 
             // find the MajorSubstation of the substation via the MajorSubstation WebUatId
-            int majorSSebUatId = ssForeign.MajorSubstationWebUatId;
-            MajorSubstation majorSS = await _context.MajorSubstations.SingleOrDefaultAsync(mss => mss.WebUatId == majorSSebUatId);
+            int majorSSWebUatId = ssForeign.MajorSubstationWebUatId;
+            MajorSubstation majorSS = await _context.MajorSubstations.SingleOrDefaultAsync(mss => mss.WebUatId == majorSSWebUatId);
             // if major Substation doesnot exist, skip the import. Ideally, there should not be such case
             if (majorSS == null)
             {
-                _log.LogCritical($"Unable to find MajorSubstation with webUatId {majorSSebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
+                _log.LogCritical($"Unable to find MajorSubstation with webUatId {majorSSWebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
                 return null;
             }
 
@@ -58,31 +58,15 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // if entity is not present, then insert
-            if (existingSS == null)
-            {
-                Substation newSS = new Substation();
-                newSS.Name = ssForeign.Name;
-                newSS.VoltLevelId = voltLevel.VoltLevelId;
-                newSS.MajorSubstationId = majorSS.MajorSubstationId;
-                newSS.StateId = state.StateId;
-                newSS.Classification = ssForeign.Classification;
-                newSS.BusbarScheme = ssForeign.BusbarScheme;
-                newSS.CodDate = ssForeign.CodDate;
-                newSS.CommDate = ssForeign.CommDate;
-                newSS.DecommDate = ssForeign.DecommDate;
-                newSS.WebUatId = ssForeign.WebUatId;
-
-                _context.Substations.Add(newSS);
-                await _context.SaveChangesAsync();
-                return newSS;
-            }
-
             // check if we have to replace the entity completely
             if (opt == EntityWriteOption.Replace && existingSS != null)
             {
                 _context.Substations.Remove(existingSS);
+            }
 
+            // if entity is not present, then insert or check if we have to replace the entity completely
+            if (existingSS == null || (opt == EntityWriteOption.Replace && existingSS != null))
+            {
                 Substation newSS = new Substation();
                 newSS.Name = ssForeign.Name;
                 newSS.VoltLevelId = voltLevel.VoltLevelId;
