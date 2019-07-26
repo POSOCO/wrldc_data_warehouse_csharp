@@ -19,8 +19,6 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        //Use the command to display employee names from 
-                        // the EMPLOYEES table
                         cmd.CommandText = "select ID, OWNER_NAME from OWNER where :id=1 and OWNER_NAME IS NOT NULL and ID IS NOT NULL";
 
                         // Assign id parameter
