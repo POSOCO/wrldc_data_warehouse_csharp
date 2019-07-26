@@ -20,8 +20,8 @@ namespace WRLDCWarehouse.ETL.Extracts
 
                         cmd.CommandText = @"select ID, TRANSFORMER_NAME, HV_STATION_ID, CIRCUIT_NUMBER, TYPE_GT_ICT, MVA_CAPACITY, 
                                             DATETIME_OF_COMMISSIONING, DATETIME_OF_DECOMMISSIONING, DATETIME_OF_COD, LOCATION_ID, 
-                                            STATIONTYPE, HV_VOLTAGE_LEVEL, LV_VOLTAGE_LEVEL from TRANSFORMER where TRANSFORMER_NAME IS NOT NULL and STATIONTYPE IS NOT NULL 
-                                            and HV_STATION_ID IS NOT NULL and CIRCUIT_NUMBER IS NOT NULL and TYPE_GT_ICT IS NOT NULL and LOCATION_ID IS NOT NULL";
+                                            STATIONTYPE, HV_VOLTAGE_LEVEL, LV_VOLTAGE_LEVEL from TRANSFORMER where :id=1 AND TRANSFORMER_NAME IS NOT NULL and STATIONTYPE IS NOT NULL 
+                                            and HV_STATION_ID IS NOT NULL and CIRCUIT_NUMBER IS NOT NULL and TYPE_GT_ICT IS NOT NULL and LOCATION_ID IS NOT NULL AND LV_VOLTAGE_LEVEL IS NOT NULL";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
