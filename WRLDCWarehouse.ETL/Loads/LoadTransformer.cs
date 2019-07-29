@@ -22,9 +22,9 @@ namespace WRLDCWarehouse.ETL.Loads
             }
 
             // check if substation type is valid
-            string ssTypeSubstation = "Substation";
+            string ssTypeSubstation = "SubStation";
             string ssTypeGenStation = "Generating Station";
-            if (trForeign.StationType == null || trForeign.StationType != ssTypeSubstation || trForeign.StationType != ssTypeGenStation)
+            if (!(trForeign.StationType == ssTypeSubstation || trForeign.StationType == ssTypeGenStation))
             {
                 _log.LogCritical($"substation type is not {ssTypeSubstation} or {ssTypeGenStation} while inserting Transformer with webUatId {trForeign.WebUatId} and name {trForeign.Name}");
                 return null;
