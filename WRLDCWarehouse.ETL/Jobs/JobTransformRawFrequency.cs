@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using WRLDCWarehouse.Core.Frequency;
 using System.Threading.Tasks;
+using WRLDCWarehouse.ETL.Extracts;
 
 namespace WRLDCWarehouse.ETL.Jobs
 {
@@ -39,6 +40,44 @@ namespace WRLDCWarehouse.ETL.Jobs
             foreach (DateTime day in DateUtils.EachDay(startDateTime, endDateTime))
             {
                 await CreateFrequencySummaryForDate(_context, day);
+            }
+        }
+
+        public void ExtractFrequenciesForDates(string oracleConnStr, DateTime startDateTime, DateTime endDateTime)
+        {
+            if (startDateTime.Date >= endDateTime.Date)
+            {
+                return;
+            }
+
+            // run the job for each day
+            foreach (DateTime day in DateUtils.EachDay(startDateTime, endDateTime))
+            {
+                RawFreqExtract rawFreqExtract = new RawFreqExtract();
+                rawFreqExtract.ExtractRawFreqs(oracleConnStr, startDateTime, endDateTime);
+            }
+        }
+
+        public async Task ProcessFrequenciesForDates(WRLDCWarehouseDbContext _context, string oracleConnStr, DateTime startDateTime, DateTime endDateTime)
+        {
+            if (startDateTime.Date >= endDateTime.Date)
+            {
+                return;
+            }
+
+            // run the job for each day
+            foreach (DateTime day in DateUtils.EachDay(startDateTime, endDateTime))
+            {
+                RawFreqExtract rawFreqExtract = new RawFreqExtract();
+                List<RawFrequency> rawFreqs = rawFreqExtract.ExtractRawFreqs(oracleConnStr, day, day);
+
+                // transform the raw frequency data
+                RawFrequencyTrasformation rawFrequencyTrasformation = new RawFrequencyTrasformation();
+                MartDailyFrequencySummary martDailyFrequencySummary = rawFrequencyTrasformation.TransformDayFreq(rawFreqs);
+
+                // load it to the mart
+                LoadFrequencySummary loadFrequencySummary = new LoadFrequencySummary();
+                await loadFrequencySummary.LoadDailyFrequencySummary(_context, martDailyFrequencySummary);
             }
         }
     }
