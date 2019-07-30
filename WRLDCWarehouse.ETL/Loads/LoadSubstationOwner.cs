@@ -42,33 +42,44 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // check if we have to replace the entity completely
-            if (opt == EntityWriteOption.Replace && existingSSOwner != null)
+            try
             {
-                _context.SubstationOwners.Remove(existingSSOwner);
+                // check if we have to replace the entity completely
+                if (opt == EntityWriteOption.Replace && existingSSOwner != null)
+                {
+                    _context.SubstationOwners.Remove(existingSSOwner);
+                }
+
+                // if entity is not present, then insert or check if we have to replace the entity completely
+                if (existingSSOwner == null || (opt == EntityWriteOption.Replace && existingSSOwner != null))
+                {
+                    SubstationOwner newSSOwner = new SubstationOwner();
+                    newSSOwner.OwnerId = owner.OwnerId;
+                    newSSOwner.SubstationId = substation.SubstationId;
+                    newSSOwner.WebUatId = ssOwnerForeign.WebUatId;
+
+                    _context.SubstationOwners.Add(newSSOwner);
+                    await _context.SaveChangesAsync();
+                    return newSSOwner;
+                }
+
+                // check if we have to modify the entity
+                if (opt == EntityWriteOption.Modify && existingSSOwner != null)
+                {
+                    existingSSOwner.OwnerId = owner.OwnerId;
+                    existingSSOwner.SubstationId = substation.SubstationId;
+                    await _context.SaveChangesAsync();
+                    return existingSSOwner;
+                }
+            }
+            catch (DbUpdateException e)
+            {
+                _log.LogCritical($"Error occured while inserting SubstationOwner with webUatId {ssOwnerForeign.WebUatId}, owner id {owner.OwnerId} and ssId {substation.SubstationId}");
+                _log.LogCritical($"EntityWriteOption = {opt.ToString()}");
+                _log.LogCritical($"{e.Message}");
+                return null;
             }
 
-            // if entity is not present, then insert or check if we have to replace the entity completely
-            if (existingSSOwner == null || (opt == EntityWriteOption.Replace && existingSSOwner != null))
-            {
-                SubstationOwner newSSOwner = new SubstationOwner();
-                newSSOwner.OwnerId = owner.OwnerId;
-                newSSOwner.SubstationId = substation.SubstationId;
-                newSSOwner.WebUatId = ssOwnerForeign.WebUatId;
-
-                _context.SubstationOwners.Add(newSSOwner);
-                await _context.SaveChangesAsync();
-                return newSSOwner;
-            }
-
-            // check if we have to modify the entity
-            if (opt == EntityWriteOption.Modify && existingSSOwner != null)
-            {
-                existingSSOwner.OwnerId = owner.OwnerId;
-                existingSSOwner.SubstationId = substation.SubstationId;
-                await _context.SaveChangesAsync();
-                return existingSSOwner;
-            }
             return null;
         }
     }

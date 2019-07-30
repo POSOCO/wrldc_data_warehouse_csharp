@@ -29,7 +29,8 @@ namespace WRLDCWarehouse.ETL.Loads
             if (majorSS == null)
             {
                 _log.LogCritical($"Unable to find MajorSubstation with webUatId {majorSSWebUatId} while inserting Substation with webUatId {ssForeign.WebUatId} and name {ssForeign.Name}");
-                return null;
+                // uncomment this if vendor obeys non nullable major ss foreign id
+                // return null;
             }
 
             // find the Voltage of the substation via the Voltage WebUatId
@@ -70,7 +71,10 @@ namespace WRLDCWarehouse.ETL.Loads
                 Substation newSS = new Substation();
                 newSS.Name = ssForeign.Name;
                 newSS.VoltLevelId = voltLevel.VoltLevelId;
-                newSS.MajorSubstationId = majorSS.MajorSubstationId;
+                if (majorSS != null)
+                {
+                    newSS.MajorSubstationId = majorSS.MajorSubstationId;
+                }
                 newSS.StateId = state.StateId;
                 newSS.Classification = ssForeign.Classification;
                 newSS.BusbarScheme = ssForeign.BusbarScheme;
@@ -89,10 +93,16 @@ namespace WRLDCWarehouse.ETL.Loads
             {
                 existingSS.Name = ssForeign.Name;
                 existingSS.VoltLevelId = voltLevel.VoltLevelId;
-                existingSS.MajorSubstationId = majorSS.MajorSubstationId;
+                if (majorSS != null)
+                {
+                    existingSS.MajorSubstationId = majorSS.MajorSubstationId;
+                }
                 existingSS.StateId = state.StateId;
                 existingSS.Classification = ssForeign.Classification;
-                existingSS.BusbarScheme = ssForeign.BusbarScheme;
+                if (ssForeign.BusbarScheme != null)
+                {
+                    existingSS.BusbarScheme = ssForeign.BusbarScheme;
+                }
                 existingSS.CodDate = ssForeign.CodDate;
                 existingSS.CommDate = ssForeign.CommDate;
                 existingSS.DecommDate = ssForeign.DecommDate;

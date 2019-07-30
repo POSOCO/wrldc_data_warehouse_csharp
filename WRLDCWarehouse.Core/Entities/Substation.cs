@@ -15,7 +15,8 @@ namespace WRLDCWarehouse.Core.Entities
         public int VoltLevelId { get; set; }
 
         public MajorSubstation MajorSubstation { get; set; }
-        public int MajorSubstationId { get; set; }
+        // We are forced to keep Major Substation foreign key as nullable due to vendor db
+        public int? MajorSubstationId { get; set; }
 
         public State State { get; set; }
         public int StateId { get; set; }
@@ -24,6 +25,7 @@ namespace WRLDCWarehouse.Core.Entities
 
         [Required]
         public string Classification { get; set; }
+
         [Required]
         public string BusbarScheme { get; set; }
         public DateTime CommDate { get; set; }
