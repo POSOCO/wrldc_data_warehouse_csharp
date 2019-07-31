@@ -39,6 +39,8 @@ namespace WRLDCWarehouse.Data
         public DbSet<TransformerType> TransformerTypes { get; set; }
         public DbSet<Transformer> Transformers { get; set; }
         public DbSet<TransformerOwner> TransformerOwners { get; set; }
+        public DbSet<BusReactor> BusReactors { get; set; }
+        public DbSet<BusReactorOwner> BusReactorOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -269,6 +271,29 @@ namespace WRLDCWarehouse.Data
                 .HasOne(to => to.Owner)
                 .WithMany()
                 .HasForeignKey(to => to.OwnerId);
+
+            // BusReactor settings - Name, WebUatId, (BusReactorNumber, SubstationId) are unique.
+            // But we are unable to maintain Name, (BusReactorNumber, SubstationId) unique duw to vendor non compliance
+            // builder.Entity<BusReactor>().HasIndex(br => new { br.BusReactorNumber, br.SubstationId}).IsUnique();
+            //builder.Entity<BusReactor>()
+            // .HasIndex(br => br.Name)
+            // .IsUnique();
+            builder.Entity<BusReactor>()
+             .HasIndex(br => br.WebUatId)
+             .IsUnique();
+
+            // Many to Many relationship of BusReactorOwners
+            builder.Entity<BusReactorOwner>().HasKey(brO => new { brO.BusReactorId, brO.OwnerId });
+
+            builder.Entity<BusReactorOwner>()
+                .HasOne(brO => brO.BusReactor)
+                .WithMany(br => br.BusReactorOwners)
+                .HasForeignKey(brO => brO.BusReactorId);
+
+            builder.Entity<BusReactorOwner>()
+                .HasOne(brO => brO.Owner)
+                .WithMany()
+                .HasForeignKey(brO => brO.OwnerId);
         }
 
     }

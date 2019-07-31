@@ -21,7 +21,7 @@ namespace WRLDCWarehouse.ETL.Loads
                 return existingTrOwner;
             }
 
-            // find the Substation via the TransformerWebUatId
+            // find the Transformer via the TransformerWebUatId
             int trWebUatId = trOwnerForeign.TransformerWebUatId;
             Transformer transformer = await _context.Transformers.SingleOrDefaultAsync(tr => tr.WebUatId == trWebUatId);
             // if Transformer doesnot exist, skip the import. Ideally, there should not be such case

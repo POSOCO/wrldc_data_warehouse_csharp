@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WRLDCWarehouse.Data;
@@ -9,9 +10,10 @@ using WRLDCWarehouse.Data;
 namespace WRLDCWareHouseWebApp.Migrations
 {
     [DbContext(typeof(WRLDCWarehouseDbContext))]
-    partial class WRLDCWarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190731182841_br_entities")]
+    partial class br_entities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,6 +178,9 @@ namespace WRLDCWareHouseWebApp.Migrations
                     b.HasKey("BusReactorId");
 
                     b.HasIndex("BusId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("StateId");
 

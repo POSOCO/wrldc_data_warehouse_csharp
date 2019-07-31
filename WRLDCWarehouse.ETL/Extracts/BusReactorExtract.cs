@@ -18,7 +18,8 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "select ID, REACTOR_NO, FK_BUS, FK_SUBSTATION, MVAR_CAPACITY, DATETIME_OF_COMMISSIONING, DATETIME_OF_COD, DATETIME_OF_DECOMMISSIONING, LOCATION_ID, REACTOR_NAME from REPORTING_WEB_UI_UAT.BUS_REACTOR where :id=1";
+                        cmd.CommandText = @"select ID, REACTOR_NO, FK_BUS, FK_SUBSTATION, MVAR_CAPACITY, DATETIME_OF_COMMISSIONING, DATETIME_OF_COD, 
+                                            DATETIME_OF_DECOMMISSIONING, LOCATION_ID, REACTOR_NAME from REPORTING_WEB_UI_UAT.BUS_REACTOR where :id=1";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
