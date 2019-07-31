@@ -17,7 +17,8 @@ namespace WRLDCWarehouse.Core.Entities
         public int HighVoltLevelId { get; set; }
 
         public VoltLevel LowVoltLevel { get; set; }
-        public int LowVoltLevelId { get; set; }
+        // using nullable low voltage levels due to vendor non compliance
+        public int? LowVoltLevelId { get; set; }
 
         public MajorSubstation HvSubstation { get; set; }
         public int? HvSubstationId { get; set; }

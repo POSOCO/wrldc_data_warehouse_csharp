@@ -75,7 +75,8 @@ namespace WRLDCWarehouse.ETL.Loads
             if (lvVolt == null)
             {
                 _log.LogCritical($"Unable to find LV VoltLevel with webUatId {lvVoltWebUatId} while inserting Transformer with webUatId {trForeign.WebUatId} and name {trForeign.Name}");
-                return null;
+                // uncomment this after vendor complies for non null LV voltage types
+                // return null;
             }
 
             // find the State of the substation via the State WebUatId
@@ -111,7 +112,10 @@ namespace WRLDCWarehouse.ETL.Loads
                 newTr.Name = trForeign.Name;
                 newTr.StationType = trForeign.StationType;
                 newTr.HighVoltLevelId = hvVolt.VoltLevelId;
-                newTr.LowVoltLevelId = lvVolt.VoltLevelId;
+                if (lvVolt != null)
+                {
+                    newTr.LowVoltLevelId = lvVolt.VoltLevelId;
+                }
                 newTr.TransformerNumber = trForeign.TransformerNumber;
                 newTr.TransformerTypeId = trType.TransformerTypeId;
                 newTr.StateId = state.StateId;
@@ -140,7 +144,10 @@ namespace WRLDCWarehouse.ETL.Loads
                 existingTr.Name = trForeign.Name;
                 existingTr.StationType = trForeign.StationType;
                 existingTr.HighVoltLevelId = hvVolt.VoltLevelId;
-                existingTr.LowVoltLevelId = lvVolt.VoltLevelId;
+                if (lvVolt != null)
+                {
+                    existingTr.LowVoltLevelId = lvVolt.VoltLevelId;
+                }
                 existingTr.TransformerNumber = trForeign.TransformerNumber;
                 existingTr.TransformerTypeId = trType.TransformerTypeId;
                 existingTr.StateId = state.StateId;

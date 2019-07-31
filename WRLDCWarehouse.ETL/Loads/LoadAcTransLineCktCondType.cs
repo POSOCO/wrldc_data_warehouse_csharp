@@ -17,7 +17,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if conductor type doesnot exist, skip the import. Ideally, there should not be such case
             if (condType == null)
             {
-                _log.LogCritical($"Unable to find ConductorType with webUatId {acLineCondTypeForeign.CondTypeWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId}");
+                _log.LogCritical($"Unable to find ConductorType with webUatId {acLineCondTypeForeign.CondTypeWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.WebUatId}");
                 return null;
             }
 
@@ -26,7 +26,7 @@ namespace WRLDCWarehouse.ETL.Loads
             // if ac transmission line ckt doesnot exist, skip the import. Ideally, there should not be such case
             if (existingAcTransLineCkt == null)
             {
-                _log.LogCritical($"Unable to find AcTransLineCkt with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId}");
+                _log.LogCritical($"Unable to find AcTransLineCkt with webUatId {acLineCondTypeForeign.AcTransLineCktWebUatId} while inserting AcTransLineCktCondType with webUatId {acLineCondTypeForeign.WebUatId}");
                 return null;
             }
 

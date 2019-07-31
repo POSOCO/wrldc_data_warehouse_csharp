@@ -20,7 +20,8 @@ namespace WRLDCWarehouse.Core.Entities
         public int GenerationTypeId { get; set; }
 
         public Fuel Fuel { get; set; }
-        public int FuelId { get; set; }
+        // making fuel Id nullable since vendor doesnot comply to non null fuel types
+        public int? FuelId { get; set; }
 
         public IList<GeneratingStationOwner> GeneratingStationOwners { get; set; }
 

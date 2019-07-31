@@ -35,7 +35,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                             busForeign.Name = reader.GetString(1);
                             busForeign.BusNumber = reader.GetInt32(2);
                             busForeign.VoltageWebUatId = reader.GetInt32(3);
-                            busForeign.AssSubstationWebUatId = reader.GetInt32(3);
+                            busForeign.AssSubstationWebUatId = reader.GetInt32(4);
                             busesForeign.Add(busForeign);
                         }
 

@@ -58,7 +58,8 @@ namespace WRLDCWarehouse.ETL.Loads
             if (fuel == null)
             {
                 _log.LogCritical($"Could not find Fuel with WebUatId {fuelWebUatId} in warehouse while creating Generating Station with WebUat Id {genStationForeign.WebUatId} and name {genStationForeign.Name}");
-                return null;
+                // uncomment this after vendor complies to non null fuel types
+                // return null;
             }
 
             // check if we have to replace the entity completely
@@ -75,7 +76,10 @@ namespace WRLDCWarehouse.ETL.Loads
                 genStation.GenerationTypeId = genType.GenerationTypeId;
                 genStation.GeneratorClassificationId = genClassification.GeneratorClassificationId;
                 genStation.StateId = state.StateId;
-                genStation.FuelId = fuel.FuelId;
+                if (fuel!=null)
+                {
+                    genStation.FuelId = fuel.FuelId;
+                }
                 genStation.WebUatId = genStationForeign.WebUatId;
 
                 _context.GeneratingStations.Add(genStation);
@@ -90,7 +94,10 @@ namespace WRLDCWarehouse.ETL.Loads
                 existingGenStation.GenerationTypeId = genType.GenerationTypeId;
                 existingGenStation.GeneratorClassificationId = genClassification.GeneratorClassificationId;
                 existingGenStation.StateId = state.StateId;
-                existingGenStation.FuelId = fuel.FuelId;
+                if (fuel!=null)
+                {
+                    existingGenStation.FuelId = fuel.FuelId;
+                }
                 await _context.SaveChangesAsync();
                 return existingGenStation;
             }
