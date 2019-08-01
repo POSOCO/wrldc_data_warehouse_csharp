@@ -430,5 +430,37 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/LineReactors
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LineReactors([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignLineReactors job = new JobReadForeignLineReactors();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignLineReactors(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing LineReactors";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/LineReactorOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LineReactorOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignLineReactorOwners job = new JobReadForeignLineReactorOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignLineReactorOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing LineReactor Owners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

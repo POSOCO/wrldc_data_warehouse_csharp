@@ -41,6 +41,8 @@ namespace WRLDCWarehouse.Data
         public DbSet<TransformerOwner> TransformerOwners { get; set; }
         public DbSet<BusReactor> BusReactors { get; set; }
         public DbSet<BusReactorOwner> BusReactorOwners { get; set; }
+        public DbSet<LineReactor> LineReactors { get; set; }
+        public DbSet<LineReactorOwner> LineReactorOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -232,7 +234,7 @@ namespace WRLDCWarehouse.Data
                 .HasForeignKey(so => so.OwnerId);
 
             // GeneratorStage settings - (Name, GeneratingStationId), WebUatId are unique.
-            builder.Entity<GeneratorStage>().HasIndex(gs => new { gs.Name, gs.GeneratingStationId}).IsUnique();
+            builder.Entity<GeneratorStage>().HasIndex(gs => new { gs.Name, gs.GeneratingStationId }).IsUnique();
             builder.Entity<GeneratorStage>()
              .HasIndex(gs => gs.WebUatId)
              .IsUnique();
@@ -275,7 +277,7 @@ namespace WRLDCWarehouse.Data
             // BusReactor settings - Name, WebUatId, (BusReactorNumber, SubstationId) are unique.
             // But we are unable to maintain Name, (BusReactorNumber, SubstationId) unique duw to vendor non compliance
             // builder.Entity<BusReactor>().HasIndex(br => new { br.BusReactorNumber, br.SubstationId}).IsUnique();
-            //builder.Entity<BusReactor>()
+            // builder.Entity<BusReactor>()
             // .HasIndex(br => br.Name)
             // .IsUnique();
             builder.Entity<BusReactor>()
@@ -294,6 +296,27 @@ namespace WRLDCWarehouse.Data
                 .HasOne(brO => brO.Owner)
                 .WithMany()
                 .HasForeignKey(brO => brO.OwnerId);
+
+            // LineReactor settings - Name, WebUatId are unique.
+            builder.Entity<LineReactor>()
+            .HasIndex(lr => lr.Name)
+            .IsUnique();
+            builder.Entity<LineReactor>()
+             .HasIndex(lr => lr.WebUatId)
+             .IsUnique();
+
+            // Many to Many relationship of LineReactorOwners
+            builder.Entity<LineReactorOwner>().HasKey(lrO => new { lrO.LineReactorId, lrO.OwnerId });
+
+            builder.Entity<LineReactorOwner>()
+                .HasOne(lrO => lrO.LineReactor)
+                .WithMany(lr => lr.LineReactorOwners)
+                .HasForeignKey(lrO => lrO.LineReactorId);
+
+            builder.Entity<LineReactorOwner>()
+                .HasOne(lrO => lrO.Owner)
+                .WithMany()
+                .HasForeignKey(lrO => lrO.OwnerId);
         }
 
     }
