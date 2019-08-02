@@ -31,7 +31,7 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // find the substation of the bus via the AssSubstation WebUatId
+            // find the voltage of the bus via the VoltLevel WebUatId
             int voltLevelWebUatId = busForeign.VoltageWebUatId;
             VoltLevel voltLevel = await _context.VoltLevels.SingleOrDefaultAsync(v => v.WebUatId == voltLevelWebUatId);
             // if voltLevel doesnot exist, skip the import. Ideally, there should not be such case
