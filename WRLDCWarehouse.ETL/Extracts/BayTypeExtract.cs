@@ -5,9 +5,9 @@ using WRLDCWarehouse.Core.Entities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class FuelExtract
+    public class BayTypeExtract
     {
-        public List<Fuel> ExtractFuels(string oracleConnString)
+        public List<BayType> ExtractBays(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -18,7 +18,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "select ID, TYPE from FUEL where :id=1 and TYPE IS NOT NULL and ID IS NOT NULL";
+                        cmd.CommandText = "select ID, TYPE from REPORTING_WEB_UI_UAT.BAY_TYPE where :id=1";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -27,18 +27,18 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<Fuel> fuels = new List<Fuel>();
+                        List<BayType> bayTypes = new List<BayType>();
                         while (reader.Read())
                         {
-                            Fuel fuel = new Fuel();
-                            fuel.WebUatId = reader.GetInt32(0);
-                            fuel.Name = reader.GetString(1);
-                            fuels.Add(fuel);
+                            BayType bayType = new BayType();
+                            bayType.WebUatId = reader.GetInt32(0);
+                            bayType.Name = reader.GetString(1);
+                            bayTypes.Add(bayType);
                         }
 
                         reader.Dispose();
 
-                        return fuels;
+                        return bayTypes;
                     }
                     catch (Exception ex)
                     {

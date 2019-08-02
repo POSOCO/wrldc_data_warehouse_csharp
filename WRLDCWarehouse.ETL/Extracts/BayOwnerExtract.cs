@@ -1,13 +1,13 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using WRLDCWarehouse.Core.Entities;
+using WRLDCWarehouse.Core.ForiegnEntities;
 
 namespace WRLDCWarehouse.ETL.Extracts
 {
-    public class FuelExtract
+    public class BayOwnerExtract
     {
-        public List<Fuel> ExtractFuels(string oracleConnString)
+        public List<BayOwnerForeign> ExtractBayOwnersForeign(string oracleConnString)
         {
             using (OracleConnection con = new OracleConnection(oracleConnString))
             {
@@ -18,7 +18,8 @@ namespace WRLDCWarehouse.ETL.Extracts
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "select ID, TYPE from FUEL where :id=1 and TYPE IS NOT NULL and ID IS NOT NULL";
+                        cmd.CommandText = @"SELECT ID, PARENT_ENTITY_ATTRIBUTE_ID, CHILD_ENTITY_ATTRIBUTE_ID from ENTITY_ENTITY_RELN WHERE :id=1 
+                                            and PARENT_ENTITY='BAY' and PARENT_ENTITY_ATTRIBUTE='Owner' and CHILD_ENTITY='OWNER' and CHILD_ENTITY_ATTRIBUTE='OwnerId'";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -27,18 +28,19 @@ namespace WRLDCWarehouse.ETL.Extracts
                         //Execute the command and use DataReader to display the data
                         OracleDataReader reader = cmd.ExecuteReader();
 
-                        List<Fuel> fuels = new List<Fuel>();
+                        List<BayOwnerForeign> bayOwnersForeign = new List<BayOwnerForeign>();
                         while (reader.Read())
                         {
-                            Fuel fuel = new Fuel();
-                            fuel.WebUatId = reader.GetInt32(0);
-                            fuel.Name = reader.GetString(1);
-                            fuels.Add(fuel);
+                            BayOwnerForeign bayOwnerForeign = new BayOwnerForeign();
+                            bayOwnerForeign.WebUatId = reader.GetInt32(0);
+                            bayOwnerForeign.BayWebUatId = reader.GetInt32(1);
+                            bayOwnerForeign.OwnerWebUatId = reader.GetInt32(2);
+                            bayOwnersForeign.Add(bayOwnerForeign);
                         }
 
                         reader.Dispose();
 
-                        return fuels;
+                        return bayOwnersForeign;
                     }
                     catch (Exception ex)
                     {

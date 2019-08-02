@@ -43,6 +43,11 @@ namespace WRLDCWarehouse.Data
         public DbSet<BusReactorOwner> BusReactorOwners { get; set; }
         public DbSet<LineReactor> LineReactors { get; set; }
         public DbSet<LineReactorOwner> LineReactorOwners { get; set; }
+        public DbSet<BayType> BayTypes { get; set; }
+        public DbSet<Bay> Bays { get; set; }
+        public DbSet<BayOwner> BayOwners { get; set; }
+        public DbSet<FilterBank> FilterBanks { get; set; }
+        public DbSet<FilterBankOwner> FilterBankOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -317,6 +322,50 @@ namespace WRLDCWarehouse.Data
                 .HasOne(lrO => lrO.Owner)
                 .WithMany()
                 .HasForeignKey(lrO => lrO.OwnerId);
+
+            // Bay Type Settings - Name, WebUatId are unique
+            builder.Entity<BayType>()
+            .HasIndex(bt => bt.Name)
+            .IsUnique();
+            builder.Entity<BayType>()
+            .HasIndex(bt => bt.WebUatId)
+            .IsUnique();
+
+            // Bay settings - Name, WebUatId are unique.
+            // (BayTypeId, SourceEntityId, SourceEntityType, DestEntityId, DestEntityType) should be unique
+            builder.Entity<Bay>()
+            .HasIndex(b => b.Name)
+            .IsUnique();
+            builder.Entity<Bay>()
+             .HasIndex(b => b.WebUatId)
+             .IsUnique();
+            builder.Entity<Bay>().HasKey(b => new { b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType });
+
+            // Many to Many relationship of LineReactorOwners
+            builder.Entity<BayOwner>().HasKey(bO => new { bO.BayId, bO.OwnerId });
+
+            builder.Entity<BayOwner>()
+                .HasOne(bO => bO.Bay)
+                .WithMany(b => b.BayOwners)
+                .HasForeignKey(bO => bO.BayId);
+
+            builder.Entity<BayOwner>()
+                .HasOne(bO => bO.Owner)
+                .WithMany()
+                .HasForeignKey(bO => bO.OwnerId);
+
+            // Many to Many relationship of FilterBankOwners
+            builder.Entity<FilterBankOwner>().HasKey(fO => new { fO.FilterBankId, fO.OwnerId });
+
+            builder.Entity<FilterBankOwner>()
+                .HasOne(fO => fO.FilterBank)
+                .WithMany(f => f.FilterBankOwners)
+                .HasForeignKey(fO => fO.FilterBankId);
+
+            builder.Entity<FilterBankOwner>()
+                .HasOne(fO => fO.Owner)
+                .WithMany()
+                .HasForeignKey(fO => fO.OwnerId);
         }
 
     }
