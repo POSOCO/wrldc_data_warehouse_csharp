@@ -26,7 +26,7 @@ namespace WRLDCWarehouse.Core.Entities
         public DateTime FtcDate { get; set; }
         public DateTime TrialOperationDate { get; set; }
         public DateTime CommDate { get; set; }
-        public DateTime CODDate { get; set; }
+        public DateTime CodDate { get; set; }
         public DateTime DeCommDate { get; set; }
 
         public IList<HvdcLineCktOwner> HvdcLineCktOwners { get; set; }

@@ -40,7 +40,7 @@ namespace WRLDCWarehouse.ETL.Loads
                 _log.LogCritical($"Unable to find State with webUatId {stateWebUatId} while inserting FilterBank with webUatId {fbForeign.WebUatId} and name {fbForeign.Name}");
                 return null;
             }
-            
+
             // find the Substation of the LineReactor via the Substation WebUatId
             int ssWebUatId = fbForeign.SubstationWebUatId;
             Substation substation = await _context.Substations.SingleOrDefaultAsync(ss => ss.WebUatId == ssWebUatId);

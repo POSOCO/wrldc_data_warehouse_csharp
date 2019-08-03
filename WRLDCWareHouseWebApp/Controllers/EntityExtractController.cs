@@ -494,5 +494,53 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/HvdcLines
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HvdcLines([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignHvdcLines job = new JobReadForeignHvdcLines();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignHvdcLines(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing HvdcLines";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/HvdcLineCkts
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HvdcLineCkts([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignHvdcLineCkts job = new JobReadForeignHvdcLineCkts();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignHvdcLineCkts(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing HvdcLineCkts";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/HvdcLineCktOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HvdcLineCktOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignHvdcLineCktOwners job = new JobReadForeignHvdcLineCktOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignHvdcLineCktOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing HvdcLineCktOwners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }
