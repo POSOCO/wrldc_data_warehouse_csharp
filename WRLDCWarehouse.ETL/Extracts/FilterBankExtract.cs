@@ -19,7 +19,7 @@ namespace WRLDCWarehouse.ETL.Extracts
                         cmd.BindByName = true;
 
                         cmd.CommandText = @"select ID, REGION_ID, STATE_ID, SUBSTATION_ID, VOLTAGE_ID, 
-                                            MVAR, IS_SWITCHABLE, FILTERBANK_NUMBER, FILTERBANK_NAME from REPORTING_WEB_UI_UAT.FILTER_BANK :id=1";
+                                            MVAR, IS_SWITCHABLE, FILTERBANK_NUMBER, FILTERBANK_NAME from REPORTING_WEB_UI_UAT.FILTER_BANK where :id=1";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);
@@ -40,7 +40,10 @@ namespace WRLDCWarehouse.ETL.Extracts
                             fbForeign.MVARCapacity = reader.GetInt32(5);
                             fbForeign.IsSwitchable = reader.GetInt32(6);
                             fbForeign.FilterBankNumber = reader.GetInt32(7);
-                            fbForeign.Name = reader.GetString(8);
+                            if (!reader.IsDBNull(8))
+                            {
+                                fbForeign.Name = reader.GetString(8);
+                            }
                             fbsForeign.Add(fbForeign);
                         }
                         reader.Dispose();

@@ -44,10 +44,14 @@ namespace WRLDCWarehouse.Data
         public DbSet<LineReactor> LineReactors { get; set; }
         public DbSet<LineReactorOwner> LineReactorOwners { get; set; }
         public DbSet<BayType> BayTypes { get; set; }
+        // Load script pending for Bays, can be done after all other types are done.
         public DbSet<Bay> Bays { get; set; }
         public DbSet<BayOwner> BayOwners { get; set; }
         public DbSet<FilterBank> FilterBanks { get; set; }
         public DbSet<FilterBankOwner> FilterBankOwners { get; set; }
+        public DbSet<HvdcLine> HvdcLines { get; set; }
+        public DbSet<HvdcLineCkt> HvdcLineCkts { get; set; }
+        public DbSet<HvdcLineCktOwner> HvdcLineCktOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -339,7 +343,7 @@ namespace WRLDCWarehouse.Data
             builder.Entity<Bay>()
              .HasIndex(b => b.WebUatId)
              .IsUnique();
-            builder.Entity<Bay>().HasKey(b => new { b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType });
+            builder.Entity<Bay>().HasIndex(b => new { b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType }).IsUnique();
 
             // Many to Many relationship of LineReactorOwners
             builder.Entity<BayOwner>().HasKey(bO => new { bO.BayId, bO.OwnerId });
@@ -354,6 +358,13 @@ namespace WRLDCWarehouse.Data
                 .WithMany()
                 .HasForeignKey(bO => bO.OwnerId);
 
+            // Filterbank settings - WebUatId is unique, name not maintained correctly by vendor.
+            // (SubstationId, Number) should be unique
+            builder.Entity<FilterBank>()
+             .HasIndex(f => f.WebUatId)
+             .IsUnique();
+            builder.Entity<FilterBank>().HasIndex(b => new { b.SubstationId, b.FilterBankNumber }).IsUnique();
+
             // Many to Many relationship of FilterBankOwners
             builder.Entity<FilterBankOwner>().HasKey(fO => new { fO.FilterBankId, fO.OwnerId });
 
@@ -366,6 +377,38 @@ namespace WRLDCWarehouse.Data
                 .HasOne(fO => fO.Owner)
                 .WithMany()
                 .HasForeignKey(fO => fO.OwnerId);
+
+            // HvdcLine settings - Name, WebUatId is unique
+            // (FromSubstationId, ToSubstationId) should be unique
+            builder.Entity<HvdcLine>()
+             .HasIndex(hl => hl.Name)
+             .IsUnique();
+            builder.Entity<HvdcLine>()
+             .HasIndex(hl => hl.WebUatId)
+             .IsUnique();
+            builder.Entity<HvdcLine>().HasIndex(hl => new { hl.FromSubstationId, hl.ToSubstationId }).IsUnique();
+
+            // HvdcLineCkt settings - Name, WebUatId are unique, (AcTransmissionLineId, circuit number) is unique
+            builder.Entity<HvdcLineCkt>()
+            .HasIndex(ckt => ckt.Name)
+            .IsUnique();
+            builder.Entity<HvdcLineCkt>()
+             .HasIndex(ckt => ckt.WebUatId)
+             .IsUnique();
+            builder.Entity<HvdcLineCkt>().HasIndex(ckt => new { ckt.HvdcLineCktId, ckt.CktNumber }).IsUnique();
+
+            // Many to Many relationship of HvdcLineCktOwners
+            builder.Entity<HvdcLineCktOwner>().HasKey(hvlO => new { hvlO.HvdcLineCktId, hvlO.OwnerId });
+
+            builder.Entity<HvdcLineCktOwner>()
+                .HasOne(hvlO => hvlO.HvdcLineCkt)
+                .WithMany(hvl => hvl.HvdcLineCktOwners)
+                .HasForeignKey(hvlO => hvlO.HvdcLineCktId);
+
+            builder.Entity<HvdcLineCktOwner>()
+                .HasOne(hvlO => hvlO.Owner)
+                .WithMany()
+                .HasForeignKey(hvlO => hvlO.OwnerId);
         }
 
     }

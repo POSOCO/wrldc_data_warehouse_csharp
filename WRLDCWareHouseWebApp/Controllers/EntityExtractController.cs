@@ -462,5 +462,37 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/FilterBanks
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FilterBanks([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignFilterBanks job = new JobReadForeignFilterBanks();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignFilterBanks(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing FilterBanks";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/FilterBankOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FilterBankOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignFilterBankOwners job = new JobReadForeignFilterBankOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignFilterBankOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing FilterBank Owners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }
