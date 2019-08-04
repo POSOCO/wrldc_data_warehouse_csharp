@@ -5,6 +5,7 @@ using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace WRLDCWarehouse.ETL.Loads
 {

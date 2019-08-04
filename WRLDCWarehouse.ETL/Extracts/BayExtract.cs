@@ -41,9 +41,12 @@ namespace WRLDCWarehouse.ETL.Extracts
                             bayForeign.SourceEntityName = reader.GetString(5);
                             bayForeign.DestEntityWebUatId = reader.GetInt32(6);
                             bayForeign.DestEntityName = reader.GetString(7);
-                            bayForeign.BayNumber = reader.GetInt32(8);
+                            bayForeign.BayNumber = reader.GetString(8);
                             bayForeign.SourceEntityType = reader.GetString(9);
-                            bayForeign.DestEntityType = reader.GetString(10);
+                            if (!reader.IsDBNull(10))
+                            {
+                                bayForeign.DestEntityType = reader.GetString(10);
+                            }
                             bayForeign.Name = reader.GetString(11);
                             baysForeign.Add(bayForeign);
                         }

@@ -12,7 +12,7 @@ namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignBayOwners
     {
-        public async Task ImportForeignFuels(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignBayOwners(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             BayOwnerExtract bayOwnerExtract = new BayOwnerExtract();
             List<BayOwnerForeign> bayOwnersForeign = bayOwnerExtract.ExtractBayOwnersForeign(oracleConnStr);

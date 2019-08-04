@@ -11,7 +11,7 @@ namespace WRLDCWarehouse.ETL.Jobs
 {
     public class JobReadForeignBayTypes
     {
-        public async Task ImportForeignFuels(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
+        public async Task ImportForeignBayTypes(WRLDCWarehouseDbContext _context, ILogger _log, string oracleConnStr, EntityWriteOption opt)
         {
             BayTypeExtract bayTypeExtract = new BayTypeExtract();
             List<BayType> bayTypes = bayTypeExtract.ExtractBays(oracleConnStr);

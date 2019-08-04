@@ -10,7 +10,7 @@
         public int DestEntityWebUatId { get; set; }
         public string DestEntityType { get; set; }
         public string DestEntityName { get; set; }
-        public int BayNumber { get; set; }
+        public string BayNumber { get; set; }
         public int BayTypeWebUatId { get; set; }
         public int VoltageWebUatId { get; set; }
         public int SubstationWebUatId { get; set; }

@@ -352,7 +352,7 @@ namespace WRLDCWarehouse.Data
              .IsUnique();
             builder.Entity<Bay>().HasIndex(b => new { b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType }).IsUnique();
 
-            // Many to Many relationship of LineReactorOwners
+            // Many to Many relationship of BayOwners
             builder.Entity<BayOwner>().HasKey(bO => new { bO.BayId, bO.OwnerId });
 
             builder.Entity<BayOwner>()
