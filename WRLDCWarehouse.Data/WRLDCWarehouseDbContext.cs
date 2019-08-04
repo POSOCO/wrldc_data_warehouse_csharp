@@ -56,6 +56,9 @@ namespace WRLDCWarehouse.Data
         public DbSet<HvdcPoleOwner> HvdcPoleOwners { get; set; }
         public DbSet<Fsc> Fscs { get; set; }
         public DbSet<FscOwner> FscOwners { get; set; }
+        public DbSet<CompensatorType> CompensatorTypes { get; set; }
+        public DbSet<Compensator> Compensators { get; set; }
+        public DbSet<CompensatorOwner> CompensatorOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -457,6 +460,36 @@ namespace WRLDCWarehouse.Data
                 .HasOne(fO => fO.Owner)
                 .WithMany()
                 .HasForeignKey(fO => fO.OwnerId);
+
+            // CompensatorType settings - Name, WebUatId are unique
+            builder.Entity<CompensatorType>()
+            .HasIndex(ct => ct.Name)
+            .IsUnique();
+            builder.Entity<CompensatorType>()
+             .HasIndex(ct => ct.WebUatId)
+             .IsUnique();
+
+            // Compensator settings - Name, WebUatId are unique
+            builder.Entity<Compensator>()
+            .HasIndex(ct => ct.Name)
+            .IsUnique();
+            builder.Entity<Compensator>()
+             .HasIndex(ct => ct.WebUatId)
+             .IsUnique();
+            builder.Entity<Compensator>().HasIndex(c => new { c.SubstationId, c.AttachElementType, c.AttachElementId, c.CompensatorNumber, c.CompensatorTypeId }).IsUnique();
+
+            // Many to Many relationship of CompensatorOwner
+            builder.Entity<CompensatorOwner>().HasKey(cO => new { cO.CompensatorId, cO.OwnerId });
+
+            builder.Entity<CompensatorOwner>()
+                .HasOne(cO => cO.Compensator)
+                .WithMany(c => c.CompensatorOwners)
+                .HasForeignKey(cO => cO.CompensatorId);
+
+            builder.Entity<CompensatorOwner>()
+                .HasOne(cO => cO.Owner)
+                .WithMany()
+                .HasForeignKey(cO => cO.OwnerId);
         }
 
     }

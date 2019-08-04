@@ -18,9 +18,9 @@ namespace WRLDCWarehouse.ETL.Jobs
             List<FscForeign> fscForeignList = fscExtract.ExtractFscForeign(oracleConnStr);
 
             LoadFsc loadFsc = new LoadFsc();
-            foreach (FscForeign lineForeign in fscForeignList)
+            foreach (FscForeign fscForeign in fscForeignList)
             {
-                Fsc insertedFsc = await loadFsc.LoadSingleAsync(_context, _log, lineForeign, opt);
+                Fsc insertedFsc = await loadFsc.LoadSingleAsync(_context, _log, fscForeign, opt);
             }
         }
     }
