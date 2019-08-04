@@ -52,6 +52,8 @@ namespace WRLDCWarehouse.Data
         public DbSet<HvdcLine> HvdcLines { get; set; }
         public DbSet<HvdcLineCkt> HvdcLineCkts { get; set; }
         public DbSet<HvdcLineCktOwner> HvdcLineCktOwners { get; set; }
+        public DbSet<HvdcPole> HvdcPoles { get; set; }
+        public DbSet<HvdcPoleOwner> HvdcPoleOwners { get; set; }
 
         // use connection string here if not working when used in startup.cs page - https://github.com/nagasudhirpulla/open_shift_scheduler/blob/master/OpenShiftScheduler/Data/ShiftScheduleDbContext.cs
         public WRLDCWarehouseDbContext(DbContextOptions<WRLDCWarehouseDbContext> options)
@@ -409,6 +411,28 @@ namespace WRLDCWarehouse.Data
                 .HasOne(hvlO => hvlO.Owner)
                 .WithMany()
                 .HasForeignKey(hvlO => hvlO.OwnerId);
+
+            // HvdcPole settings - Name, WebUatId are unique, (SubstationId, PoleNumber) is unique
+            builder.Entity<HvdcPole>()
+            .HasIndex(ckt => ckt.Name)
+            .IsUnique();
+            builder.Entity<HvdcPole>()
+             .HasIndex(ckt => ckt.WebUatId)
+             .IsUnique();
+            builder.Entity<HvdcPole>().HasIndex(ckt => new { ckt.SubstationId, ckt.PoleNumber }).IsUnique();
+
+            // Many to Many relationship of HvdcPoleOwner
+            builder.Entity<HvdcPoleOwner>().HasKey(hvpO => new { hvpO.HvdcPoleId, hvpO.OwnerId });
+
+            builder.Entity<HvdcPoleOwner>()
+                .HasOne(hvpO => hvpO.HvdcPole)
+                .WithMany(hvp => hvp.HvdcPoleOwners)
+                .HasForeignKey(hvpO => hvpO.HvdcPoleId);
+
+            builder.Entity<HvdcPoleOwner>()
+                .HasOne(hvpO => hvpO.Owner)
+                .WithMany()
+                .HasForeignKey(hvpO => hvpO.OwnerId);
         }
 
     }

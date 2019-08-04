@@ -542,5 +542,37 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/HvdcPoles
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HvdcPoles([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignHvdcPoles job = new JobReadForeignHvdcPoles();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignHvdcPoles(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing HvdcPoles";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/HvdcPoleOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HvdcPoleOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignHvdcPoleOwners job = new JobReadForeignHvdcPoleOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignHvdcPoleOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing HvdcPoleOwners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }

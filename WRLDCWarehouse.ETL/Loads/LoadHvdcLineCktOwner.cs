@@ -31,7 +31,7 @@ namespace WRLDCWarehouse.ETL.Loads
                 return null;
             }
 
-            // find the Owner of the substation via the Owner WebUatId
+            // find the Owner of the HvdcLineCkt via the Owner WebUatId
             int ownerWebUatId = cktOwnerForeign.OwnerWebUatId;
             Owner owner = await _context.Owners.SingleOrDefaultAsync(o => o.WebUatId == ownerWebUatId);
             // if owner doesnot exist, skip the import. Ideally, there should not be such case
