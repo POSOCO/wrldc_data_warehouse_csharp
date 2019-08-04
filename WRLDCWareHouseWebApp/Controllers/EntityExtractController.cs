@@ -574,5 +574,37 @@ namespace WRLDCWareHouseWebApp.Controllers
             }
             return View(vm);
         }
+
+        // POST: EntityExtract/Fscs
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Fscs([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignFscs job = new JobReadForeignFscs();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignFscs(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing Fscs";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
+
+        // POST: EntityExtract/FscOwners
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FscOwners([Bind("EntityWriteOption")] EntityExtractViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                JobReadForeignFscOwners job = new JobReadForeignFscOwners();
+                string oracleWebUatConnStr = Configuration.GetConnectionString("OracleWebUIUATConnection");
+                await job.ImportForeignFscOwners(_context, _log, oracleWebUatConnStr, vm.EntityWriteOption);
+                TempData["Message"] = "Completed Importing FscOwners";
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+        }
     }
 }
