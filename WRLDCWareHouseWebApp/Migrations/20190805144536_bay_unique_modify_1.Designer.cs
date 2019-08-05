@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WRLDCWarehouse.Data;
@@ -9,9 +10,10 @@ using WRLDCWarehouse.Data;
 namespace WRLDCWareHouseWebApp.Migrations
 {
     [DbContext(typeof(WRLDCWarehouseDbContext))]
-    partial class WRLDCWarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190805144536_bay_unique_modify_1")]
+    partial class bay_unique_modify_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,6 +153,9 @@ namespace WRLDCWareHouseWebApp.Migrations
                     b.HasKey("BayId");
 
                     b.HasIndex("BayTypeId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("SubstationId");
 

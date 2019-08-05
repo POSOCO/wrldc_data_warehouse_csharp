@@ -20,7 +20,7 @@ namespace WRLDCWarehouse.ETL.Extracts
 
                         cmd.CommandText = @"select ID, VOLTAGE_ID, STATION_ID, BAY_TYPE_ID, SOURCE_ID, SOURCE_ENTITY, DESTINATION_ID, 
                                             DESTINATION_ENTITY, BAY_NUMBER, SOURCE_ENTITY_TYPE, DESTINATION_ENTITY_TYPE, 
-                                            BAY_NAME from REPORTING_WEB_UI_UAT.BAY where :id=1";
+                                            BAY_NAME from REPORTING_WEB_UI_UAT.BAY where :id=1 and BAY_NUMBER is NOT NULL";
 
                         // Assign id parameter
                         OracleParameter id = new OracleParameter("id", 1);

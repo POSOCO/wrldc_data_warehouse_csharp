@@ -5,6 +5,7 @@ using WRLDCWarehouse.Core.ForiegnEntities;
 using Microsoft.EntityFrameworkCore;
 using WRLDCWarehouse.ETL.Enums;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace WRLDCWarehouse.ETL.Loads
 {
@@ -55,48 +56,55 @@ namespace WRLDCWarehouse.ETL.Loads
             {
                 // find the sourceEntityId of the Bay
                 int entityId = -1;
-                // entityType can be AC LINE CIRCUIT,TCSC,BUS REACTOR,TRANSFORMER,Filter Bank,BUS,FSC,LINE REACTOR
-                string entityType = bayForeign.SourceEntityType;
-                int elementWebUatId = bayForeign.SourceEntityWebUatId;
-                if (entityType == "AC LINE CIRCUIT")
+                try
                 {
-                    // attach element is AcTransLineCkt
-                    entityId = (await _context.AcTransLineCkts.SingleOrDefaultAsync(ckt => ckt.WebUatId == elementWebUatId)).AcTransLineCktId;
+                    // entityType can be AC LINE CIRCUIT,TCSC,BUS REACTOR,TRANSFORMER,Filter Bank,BUS,FSC,LINE REACTOR
+                    string entityType = bayForeign.SourceEntityType;
+                    int elementWebUatId = bayForeign.SourceEntityWebUatId;
+                    if (entityType == "AC LINE CIRCUIT")
+                    {
+                        // attach element is AcTransLineCkt
+                        entityId = (await _context.AcTransLineCkts.SingleOrDefaultAsync(ckt => ckt.WebUatId == elementWebUatId)).AcTransLineCktId;
+                    }
+                    else if (entityType == "TCSC")
+                    {
+                        // attach element is Compensator
+                        entityId = (await _context.Compensators.SingleOrDefaultAsync(c => c.WebUatId == elementWebUatId)).CompensatorId;
+                    }
+                    else if (entityType == "BUS REACTOR")
+                    {
+                        // attach element is BUS REACTOR
+                        entityId = (await _context.BusReactors.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).BusReactorId;
+                    }
+                    else if (entityType == "TRANSFORMER")
+                    {
+                        // attach element is TRANSFORMER
+                        entityId = (await _context.Transformers.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).TransformerId;
+                    }
+                    else if (entityType == "Filter Bank")
+                    {
+                        // attach element is Filter Bank
+                        entityId = (await _context.FilterBanks.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).FilterBankId;
+                    }
+                    else if (entityType == "BUS")
+                    {
+                        // attach element is BUS
+                        entityId = (await _context.Buses.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).BusId;
+                    }
+                    else if (entityType == "FSC")
+                    {
+                        // attach element is FSC
+                        entityId = (await _context.Fscs.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).FscId;
+                    }
+                    else if (entityType == "LINE REACTOR")
+                    {
+                        // attach element is LINE REACTOR
+                        entityId = (await _context.LineReactors.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).LineReactorId;
+                    }
                 }
-                else if (entityType == "TCSC")
+                catch (Exception e)
                 {
-                    // attach element is Compensator
-                    entityId = (await _context.Compensators.SingleOrDefaultAsync(c => c.WebUatId == elementWebUatId)).CompensatorId;
-                }
-                else if (entityType == "BUS REACTOR")
-                {
-                    // attach element is BUS REACTOR
-                    entityId = (await _context.BusReactors.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).BusReactorId;
-                }
-                else if (entityType == "TRANSFORMER")
-                {
-                    // attach element is TRANSFORMER
-                    entityId = (await _context.Transformers.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).TransformerId;
-                }
-                else if (entityType == "Filter Bank")
-                {
-                    // attach element is Filter Bank
-                    entityId = (await _context.FilterBanks.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).FilterBankId;
-                }
-                else if (entityType == "BUS")
-                {
-                    // attach element is BUS
-                    entityId = (await _context.Buses.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).BusId;
-                }
-                else if (entityType == "FSC")
-                {
-                    // attach element is FSC
-                    entityId = (await _context.Fscs.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).FscId;
-                }
-                else if (entityType == "LINE REACTOR")
-                {
-                    // attach element is LINE REACTOR
-                    entityId = (await _context.LineReactors.SingleOrDefaultAsync(br => br.WebUatId == elementWebUatId)).LineReactorId;
+                    Console.WriteLine(e.Message);
                 }
                 return entityId;
             }

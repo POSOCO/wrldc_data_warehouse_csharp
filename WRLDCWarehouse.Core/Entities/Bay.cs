@@ -17,7 +17,7 @@ namespace WRLDCWarehouse.Core.Entities
         [Required]
         public string SourceEntityType { get; set; }
         public string SourceEntityName { get; set; }
-        public int DestEntityId { get; set; }
+        public int? DestEntityId { get; set; }
         public string DestEntityType { get; set; }
         public string DestEntityName { get; set; }
 

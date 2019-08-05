@@ -343,14 +343,16 @@ namespace WRLDCWarehouse.Data
             .IsUnique();
 
             // Bay settings - Name, WebUatId are unique.
-            // (BayTypeId, SourceEntityId, SourceEntityType, DestEntityId, DestEntityType) should be unique
-            builder.Entity<Bay>()
-            .HasIndex(b => b.Name)
-            .IsUnique();
+            // (SubstationId, BayTypeId, SourceEntityId, SourceEntityType, DestEntityId, DestEntityType) should be unique, but unable to implement due to vendor non compliance
+            // (SubstationId, BayNumber) should be unique, but unable to implement due to vendor non compliance
+            // Name should be unique, but unable to implement due to vendor non compliance
+            //builder.Entity<Bay>()
+            //.HasIndex(b => b.Name)
+            //.IsUnique();
             builder.Entity<Bay>()
              .HasIndex(b => b.WebUatId)
              .IsUnique();
-            builder.Entity<Bay>().HasIndex(b => new { b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType }).IsUnique();
+            // builder.Entity<Bay>().HasIndex(b => new { b.SubstationId, b.BayTypeId, b.SourceEntityType, b.SourceEntityId, b.DestEntityId, b.DestEntityType }).IsUnique();
 
             // Many to Many relationship of BayOwners
             builder.Entity<BayOwner>().HasKey(bO => new { bO.BayId, bO.OwnerId });
